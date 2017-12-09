@@ -1,3 +1,5 @@
+#just a test
+
 source("readGX.R")
 source("summary_GXcurve.R")
 source("CS_GXcurve.R")
