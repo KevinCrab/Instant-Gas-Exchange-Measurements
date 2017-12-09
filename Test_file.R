@@ -1,11 +1,11 @@
 #just a test
 
-source("readGX.R")
-source("summary_GXcurve.R")
-source("CS_GXcurve.R")
-source("Find_GXcurve.R")
-source("GetValue_GXcurve.R")
-source("plot_GXcurve.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/readGX.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/summary_GXcurve.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/CS_GXcurve.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/Find_GXcurve.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/GetValue_GXcurve.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/plot_GXcurve.R")
 gl = "genotypic imformation.csv"
 
 leak1_718 = read.GX(filename = "KX 07-18-2017 ril leak1_.csv",leaf_rep = 1,gl)

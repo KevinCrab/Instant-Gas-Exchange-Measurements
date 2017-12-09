@@ -59,11 +59,11 @@ read.GX <- function(filename,leaf_rep,genolist,condition = FALSE){
   other = unique(table$HHMMSS)[!unique(table$HHMMSS) %in% digit3]
   if(length(other)>1) {
     cat("check out these names, are they 3 digits? \n",other)
-    zero = readline(prompt = "you can add 0 if they are smaller than 3 digits Yes/No      ")
-    if(zero == "Yes"){
-      table[grep("^[[:digit:]]{2}$",table$HHMMSS),"HHMMSS"] = paste("0",table[grep("^[[:digit:]]{2}$",table$HHMMSS),"HHMMSS"],sep="")
-      table[grep("^[[:digit:]]{1}$",table$HHMMSS),"HHMMSS"] = paste("00",table[grep("^[[:digit:]]{1}$",table$HHMMSS),"HHMMSS"],sep="")
-    }
+    cat("\nReformatting them into 3 digits...")
+    Sys.sleep(2)
+    table[grep("^[[:digit:]]{2}$",table$HHMMSS),"HHMMSS"] = paste("0",table[grep("^[[:digit:]]{2}$",table$HHMMSS),"HHMMSS"],sep="")
+    table[grep("^[[:digit:]]{1}$",table$HHMMSS),"HHMMSS"] = paste("00",table[grep("^[[:digit:]]{1}$",table$HHMMSS),"HHMMSS"],sep="")
+    cat("Done.")
   }
   table$name = table$HHMMSS
   table$plot = table$HHMMSS
