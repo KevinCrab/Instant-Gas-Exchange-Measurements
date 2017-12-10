@@ -1,0 +1,14 @@
+leak1_718 = read.csv("KX 07-18-2017 ril leak1_.csv",header=FALSE)
+genotypic_information = read.csv("genotypic imformation.csv",header=FALSE)
+leak2_718 = read.GX(filename = "KX 07-18-2017 RIL leak2_.csv",leaf_rep = 1,gl)
+steward_718 = read.GX(filename = "TMW 07-18-2017 ril stewart_.csv",leaf_rep = 1,gl)
+leak1_719 = read.GX(filename = "KX 07-19-2017 RIL_ leak1.csv",leaf_rep = 2,gl)
+leak1_720 = read.GX(filename = "nicole-7-20-2017-ril_leak1.csv",leaf_rep = 1,gl)
+steward_720 = read.GX(filename = "KX 07-20-2017 RIL_Stewart.csv",leaf_rep = 1,gl)
+leak1_721 = read.GX(filename = "cm 07-21-2017 ril leak1_.csv",leaf_rep = 2,gl)
+leak2_721 = read.GX(filename = "cm 07-21-2017 ril leak2_.csv",leaf_rep = 2,gl)
+steward_721 = read.GX(filename = "KX 07-21-2017 RIL STEWARD_.csv",leaf_rep = 2,gl)
+
+test = read.GX(leak1_718,leaf_rep = 1,genotypic_information)
+
+

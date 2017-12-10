@@ -22,7 +22,10 @@ steward_721 = read.GX(filename = "KX 07-21-2017 RIL STEWARD_.csv",leaf_rep = 2,g
 
 
 all = CS(leak1_718,leak2_718,leak1_719,leak1_720,leak1_721,leak2_721,
-        steward_720,steward_721,steward_718)
+         steward_720,steward_721,steward_718)
+
+
+
 
 
 mean = GetValue(all)

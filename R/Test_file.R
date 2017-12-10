@@ -1,11 +1,11 @@
 #just a test
 
-source("~/GitHub/Instant-Gas-Exchange-Measurements/readGX.R")
-source("~/GitHub/Instant-Gas-Exchange-Measurements/summary_GXcurve.R")
-source("~/GitHub/Instant-Gas-Exchange-Measurements/CS_GXcurve.R")
-source("~/GitHub/Instant-Gas-Exchange-Measurements/Find_GXcurve.R")
-source("~/GitHub/Instant-Gas-Exchange-Measurements/GetValue_GXcurve.R")
-source("~/GitHub/Instant-Gas-Exchange-Measurements/plot_GXcurve.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/readGX.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/summary_GXcurve.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/CS_GXcurve.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/Find_GXcurve.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/GetValue_GXcurve.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/plot_GXcurve.R")
 gl = "genotypic imformation.csv"
 
 leak1_718 = read.GX(filename = "KX 07-18-2017 ril leak1_.csv",leaf_rep = 1,gl)
@@ -22,7 +22,7 @@ steward_721 = read.GX(filename = "KX 07-21-2017 RIL STEWARD_.csv",leaf_rep = 2,g
 
 
 all = CS(leak1_718,leak2_718,leak1_719,leak1_720,leak1_721,leak2_721,
-        steward_720,steward_721,steward_718)
+         steward_720,steward_721,steward_718)
 
 
 mean = GetValue(all)
