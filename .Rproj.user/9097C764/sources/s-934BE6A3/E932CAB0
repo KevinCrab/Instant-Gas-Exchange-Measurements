@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1512878568248.000,
+    "dirty" : true,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "E932CAB0",
+    "lastKnownWriteTime" : 1512876494,
+    "last_content_update" : 1512878609647,
+    "path" : "~/GitHub/Instant-Gas-Exchange-Measurements/R/Test_file.R",
+    "project_path" : "R/Test_file.R",
+    "properties" : {
+        "cursorPosition" : "8,0",
+        "scrollLine" : "0"
+    },
+    "relative_order" : 1,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
