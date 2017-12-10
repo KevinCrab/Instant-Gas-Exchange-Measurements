@@ -1,3 +1,0 @@
-TEST = function(a){
-  print(a)
-}

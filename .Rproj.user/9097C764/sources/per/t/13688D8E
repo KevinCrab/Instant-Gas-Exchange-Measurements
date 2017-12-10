@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1512890053422.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1412946946",
+    "id" : "13688D8E",
+    "lastKnownWriteTime" : 1512851054,
+    "last_content_update" : 1512851054,
+    "path" : "~/GitHub/Instant-Gas-Exchange-Measurements/R/GetValue_GXcurve.R",
+    "project_path" : "R/GetValue_GXcurve.R",
+    "properties" : {
+        "cursorPosition" : "53,37",
+        "scrollLine" : "42"
+    },
+    "relative_order" : 3,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}
