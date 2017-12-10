@@ -1,0 +1,23 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1512929733803.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "0",
+    "id" : "C7685CAD",
+    "lastKnownWriteTime" : 1512929876,
+    "last_content_update" : 1512929876093,
+    "path" : "~/GitHub/Instant-Gas-Exchange-Measurements/R/PGMean.R",
+    "project_path" : "R/PGMean.R",
+    "properties" : {
+        "cursorPosition" : "7,53",
+        "scrollLine" : "0",
+        "tempName" : "Untitled1"
+    },
+    "relative_order" : 6,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_source"
+}

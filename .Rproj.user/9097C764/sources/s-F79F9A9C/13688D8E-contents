@@ -48,7 +48,8 @@ GetValue.GXcurve = function(table, first.minute = TRUE, last.minute = TRUE){
   cat(x,"getting value for ----",nameslist[x],"\n")
   }
   #combining and assigning new class
-  ps = data.frame(plot_name, leaf_name, name,genotype,range,row,block)
+  ps = data.frame(plot_name, leaf_name, name,genotype,range,row,block,stringsAsFactors = FALSE)
+  
   if(first.minute) ps = cbind(ps,Photo_first,Cond_first,Ci.Ca_first)
   if(last.minute) ps = cbind(ps,Photo_last,Cond_last,Ci.Ca_last)
   class(ps) <- c("GXmean", class(ps))
