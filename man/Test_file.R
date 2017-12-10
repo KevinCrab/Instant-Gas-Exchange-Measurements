@@ -1,3 +1,5 @@
+#just a test
+
 source("~/GitHub/Instant-Gas-Exchange-Measurements/readGX.R")
 source("~/GitHub/Instant-Gas-Exchange-Measurements/summary_GXcurve.R")
 source("~/GitHub/Instant-Gas-Exchange-Measurements/CS_GXcurve.R")
@@ -5,9 +7,7 @@ source("~/GitHub/Instant-Gas-Exchange-Measurements/Find_GXcurve.R")
 source("~/GitHub/Instant-Gas-Exchange-Measurements/GetValue_GXcurve.R")
 source("~/GitHub/Instant-Gas-Exchange-Measurements/plot_GXcurve.R")
 gl = "genotypic imformation.csv"
-source('~/GitHub/Instant-Gas-Exchange-Measurements/Test_file.R', echo=TRUE)
-setwd("~/GitHub/Instant-Gas-Exchange-Measurements/test data")
-gl = "genotypic imformation.csv"
+
 leak1_718 = read.GX(filename = "KX 07-18-2017 ril leak1_.csv",leaf_rep = 1,gl)
 leak2_718 = read.GX(filename = "KX 07-18-2017 RIL leak2_.csv",leaf_rep = 1,gl)
 steward_718 = read.GX(filename = "TMW 07-18-2017 ril stewart_.csv",leaf_rep = 1,gl)
@@ -19,19 +19,23 @@ steward_720 = read.GX(filename = "KX 07-20-2017 RIL_Stewart.csv",leaf_rep = 1,gl
 leak1_721 = read.GX(filename = "cm 07-21-2017 ril leak1_.csv",leaf_rep = 2,gl)
 leak2_721 = read.GX(filename = "cm 07-21-2017 ril leak2_.csv",leaf_rep = 2,gl)
 steward_721 = read.GX(filename = "KX 07-21-2017 RIL STEWARD_.csv",leaf_rep = 2,gl)
+
+
 all = CS(leak1_718,leak2_718,leak1_719,leak1_720,leak1_721,leak2_721,
-steward_720,steward_721,steward_718)
-prompt(read.GX)
-prompt(read)
-install.packages("qtl")
-View(head(read.csv("KX 07-18-2017 ril leak1_.csv"),10))
-source("~/GitHub/Instant-Gas-Exchange-Measurements/readGX.R")
-source("~/GitHub/Instant-Gas-Exchange-Measurements/summary_GXcurve.R")
-source("~/GitHub/Instant-Gas-Exchange-Measurements/CS_GXcurve.R")
-source("~/GitHub/Instant-Gas-Exchange-Measurements/Find_GXcurve.R")
-source("~/GitHub/Instant-Gas-Exchange-Measurements/GetValue_GXcurve.R")
-source("~/GitHub/Instant-Gas-Exchange-Measurements/plot_GXcurve.R")
-gl = "genotypic imformation.csv"
-leak1_718 = read.GX(filename = "KX 07-18-2017 ril leak1_.csv",leaf_rep = 1,gl)
-View(leak1_718)
-leak1_718 = read.GX(filename = "KX 07-18-2017 ril leak1_.csv",leaf_rep = 1,gl,TRUE)
+        steward_720,steward_721,steward_718)
+
+
+mean = GetValue(all)
+
+sub = all[which(all$name %in% head(unique(all$name))),]
+
+plot(sub,sub,"Photo")
+
+plotGX("Photo",genotype = "Z019E0032", dataset=all)
+
+
+plot.GXcurve("Cond",genotype = c("Z019E0142"),dataset=all)
+
+
+
+
