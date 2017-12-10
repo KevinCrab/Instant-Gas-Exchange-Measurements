@@ -21,8 +21,6 @@ leak2_721 = read.GX(filename = "cm 07-21-2017 ril leak2_.csv",leaf_rep = 2,gl)
 steward_721 = read.GX(filename = "KX 07-21-2017 RIL STEWARD_.csv",leaf_rep = 2,gl)
 
 
-filename = "nicole-7-20-2017-ril-leak2_.csv"
-
 all = CS(leak1_718,leak2_718,leak1_719,leak1_720,leak1_721,leak2_721,
         steward_720,steward_721,steward_718)
 
