@@ -114,7 +114,7 @@ read.GX <- function(filename,leaf_rep,genolist,condition = FALSE){
   attr(table, "measurement_time") <- measurement.time
   attr(table, "machine") <- machine
   attr(table, "lightsource") <- lightsource
-  attr(table, "AD.avgtime") <- AD.avgtime
+  attr(table, "AD.avgtime") <- AD.avgtime 
   attr(table, "flow") <- flow
   attr(table, "par") <- par
   attr(table, "CO2_mixer") <- CO2

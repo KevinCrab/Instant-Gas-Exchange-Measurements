@@ -6,7 +6,7 @@ Read in Licor-6400 raw Data
 %%  ~~function to do ... ~~
 }
 \description{
-read.GX reads the raw csv files generated from licor-6400 gas exchange measurement.It records measurement conditions, extracts each measurement observations, trims unnecessary parameters, matches genotype names and reformats name digit numbers. Data from machines with different output format settings are reorganized. 
+read.GX reads the raw csv files generated from licor-6400 gas exchange measurement.It records measurement conditions, extracts each measurement observations, trims unnecessary parameters, matches genotype names and reformats name digit numbers. Data from machines with different output structure settings are unified and reorganized. 
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
@@ -50,10 +50,8 @@ Jiayang Xie
 
 
 \examples{
-
 # Assume "GX_output.csv"" file is exported from Licor-6400 machine
 # "genotypic imformation.csv" has matching of plot names with genotype names.
-
 read.GX(filename = "GX_output.csv",leaf_rep = 1, genolist = "genotypic imformation.csv",condition = TRUE)
 
 }
