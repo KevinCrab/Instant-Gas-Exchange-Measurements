@@ -14,25 +14,85 @@ Photosythesis rate, water conductance and Ci/Ca (intercellular to ambient CO2 pa
 
 This R package is designed specifically for experimental projects that are currently going on in [Leakey Lab (UIUC)](https://lab.igb.illinois.edu/leakey/home). Recently Postoc Dr. Wertin applied a high-throughtput protocol for gas exchange measurements in this summer field season. The major improvement of this protocol involves harvesting leaves in the field and then conducting measurements in lab instead of taking the machine out in the field to the plants. This newer method allows us to measure more than 200 leafs (single 4-minute measurement on each leaf) per day, attributing to the fact that people don't need to carry around the heavy machine in the field under harsh sunlight. After being harvested from field and take back to lab, each leaf is kept hydrated by inserting its cut wound side into a 10 ml tube full of water. Leaves are rotationally incubated for half an hour in two lighted growth chambers prior to measurements since it takes that long to activate each leaf and let them function happily. Recording leaf's identity into LI-6400XT is done by adding "remarks" of leaf identity between two measurements. This is a bit old fashioned and also is where a big part of human errors come from that need to be fixed. Measurements are taken place after clamping the leaf for 4 minutes. 
 
+EXample data provided in this tutorial is my real data collected in this summer. In order to better show the functions of my package as well as to have a reasonable data size, a part of my dataset is provided here. My experimental design is a RCBD with 2 blocks. With in each block, each genotype has its plot and there are 2 biological sampled within each plot. Due to the fact that here is a partial dataset, total reps for most genotypes are less than 4. 
+
 ```{r include = FALSE}
 GXread = "read.GX"
 CS_GXcurve = "CS.GXcurve"
 plotGX = "plotGX"
 Find_GXcurve = "Find.GXcurve"
-GetValue_GXcurve = "GetValue,GXcurve"
+GetValue_GXcurve = "GetValue.GXcurve"
 PGMean = "PGMean.GXvalue"
 summary_GXcurve = "summary.GXcurve"
 summary_GXvalue = "summary.GXvalue"
 summary_GXmean = "summary.GXmean"
+
+setwd("~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata")
+
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/GXread.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/CS_GXcurve.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/GetValue_GXcurve.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/Find_GXcurve.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/plotGX.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/PGMean.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/summary_GXcurve.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/summary_GXvalue.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/summary_GXmean.R")
 
 ```
 
 
 The aim of this package is to provide a pipeline of treating the standard output table from LI-6400XT. Measurements are first reformated, merged and screened to see abnormal measurements in ``GXread`` and ``CS_GXcurve`` function. Then curves can be plotted so that outliers can be spotted and found, using ``plotGX`` and ``Find_GXcurve``. Values will be extracted from curves with function ``GetValue_GXcurve``. At last ``PGMean`` is unsed to calculate plot means and genotype means. ``summary_GXcurve``, ``summary_GXvalue``, ``summary_GXmean`` provide detailed information for corresponding class of data.
 
-There are two types of value we calculate and include in our further experiment (like correlation with other traits): First, we find the biggest "water conductance" value in the first minute and take the corresponding "Photosythesis" and "Ci/Ca" values; Second, we take the means of these three parameters in the last minute. Currently we don't know which set of values are better representative but we hope further analysis will tell us more. After
+
 
 ## read.GX
+
+Once you copied the raw output table from LI-6400, turn it into csv file. My files have a naming convention of "Operator + date + population + machine .csv". These data are provided in **inst/extdata** folder. First we read them in. On each day we sample a whole set of replicates, thus, samples measured on 7-18 and 9-20 are leaf replicates 1 and samples measured on 7-19 and 7-21 are leaf replicates 2. ``genolist is 
+
+
+
+```{r}
+
+leak1_718 = read.GX(filename = "KX 07-18-2017 ril leak1_.csv",leaf_rep = 1,genolist = "genotypic imformation.csv")
+leak2_718 = read.GX(filename = "KX 07-18-2017 RIL leak2_.csv",leaf_rep = 1,genolist = "genotypic imformation.csv")
+steward_718 = read.GX(filename = "TMW 07-18-2017 ril stewart_.csv",leaf_rep = 1,genolist = "genotypic imformation.csv")
+leak1_719 = read.GX(filename = "KX 07-19-2017 RIL_ leak1.csv",leaf_rep = 2,genolist = "genotypic imformation.csv")
+leak1_720 = read.GX(filename = "nicole-7-20-2017-ril_leak1.csv",leaf_rep = 1,genolist = "genotypic imformation.csv")
+steward_720 = read.GX(filename = "KX 07-20-2017 RIL_Stewart.csv",leaf_rep = 1,genolist = "genotypic imformation.csv")
+leak1_721 = read.GX(filename = "cm 07-21-2017 ril leak1_.csv",leaf_rep = 2,genolist = "genotypic imformation.csv")
+leak2_721 = read.GX(filename = "cm 07-21-2017 ril leak2_.csv",leaf_rep = 2,genolist = "genotypic imformation.csv")
+steward_721 = read.GX(filename = "KX 07-21-2017 RIL STEWARD_.csv",leaf_rep = 2,genolist = "genotypic imformation.csv")
+```
+
+
+
+
+
+
+
+
+## CS_GXcurve
+
+
+There are two types of value we calculate and include in our further experiment (like correlation with other traits): First, we find the biggest "water conductance" value in the first minute and take the corresponding "Photosythesis" and "Ci/Ca" values; Second, we take the means of these three parameters in the last minute. Currently we don't know which set of values are better representative but we hope further analysis will tell us more. After
+
+
+## plotGX
+
+
+## Find.GXcurve
+
+
+## GetValue.GXcurve
+
+
+## PGMean.GXvalue
+
+
+## summary
+
+
 
 
 
