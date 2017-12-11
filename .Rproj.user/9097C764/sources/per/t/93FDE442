@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1512974579163.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "1789639858",
+    "id" : "93FDE442",
+    "lastKnownWriteTime" : 1512974710,
+    "last_content_update" : 1512974710652,
+    "path" : "~/GitHub/Instant-Gas-Exchange-Measurements/man/GXread.Rd",
+    "project_path" : "man/GXread.Rd",
+    "properties" : {
+        "cursorPosition" : "53,77",
+        "scrollLine" : "30"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_doc"
+}
