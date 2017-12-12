@@ -6,8 +6,7 @@ Authors@R: person("Jiayang", "Xie", role = c("aut", "cre"),
                   email = "kevinxiek@illinois.edu")
 Author: Jiayang Xie [aut, cre]
 Maintainer: Jiayang Xie <kevinxiek@illinois.edu>
-Description: This packages aims to reformat the raw output data from Licor-6400 gas exchange machine and analyze key physiological trait
-(Photosythesis, water conductanca, and Ci/Ca).
+Description: This packages aims to reformat the raw output data from Licor-6400 gas exchange machine and analyze key physiological trait (Photosythesis, water conductanca, and Ci/Ca).
 Url: https://github.com/KevinCrab/Instant-Gas-Exchange-Measurements
 License: GPL-3
 Imports:"ggplot2"

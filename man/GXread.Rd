@@ -19,11 +19,11 @@ read.GX(filename, leaf_rep, genolist, condition = FALSE)
 %%     ~~Describe \code{filename} here~~
 }
   \item{leaf_rep}{
-  each day we sample a whole set of replication for each plot. Thus, each file comprise of same leaf replicate number.
+  a numeric number to indicate replicate number, usually start from 1. each day we sample a whole set of replication for each plot. Thus, each file comprise of same leaf replicate number.
 %%     ~~Describe \code{leaf_rep} here~~
 }
   \item{genolist}{
-  a list of plot names and corresponding genotype names.
+  a dataframe with at least two columns indicating plot indexes and their corresponding genotype names. 
 %%     ~~Describe \code{genolist} here~~
 }
   \item{condition}{

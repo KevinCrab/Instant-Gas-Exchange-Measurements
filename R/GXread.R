@@ -3,7 +3,7 @@ read.GX <- function(filename,leaf_rep,genolist,condition = FALSE){
   table = read.csv(filename,header = FALSE,stringsAsFactors = FALSE,na.strings = c("","NA"))
   #check input
   if(!is.data.frame(table)) stop("Data frame needed.")
-  if(!as.numeric(leaf_rep)) stop("leaf replication number must be numeric\nstart from 1")
+  if(!is.numeric(leaf_rep)) stop("leaf replication number must be numeric\nstart from 1")
   #record measurement properties
   measurement.time = table[2,1]
   machine = table[which(table$V1=="Unit="),2]
@@ -31,7 +31,7 @@ read.GX <- function(filename,leaf_rep,genolist,condition = FALSE){
     warning("Multiple measuring conditions. Check data collection conditions.")
     print(c(flow,par,CO2,Tblock))
     }
-    if(length(flow) == 0 | length(par) == 0 | length(CO2) == 0 | length(Tblock) == 0){
+  if(length(flow) == 0 | length(par) == 0 | length(CO2) == 0 | length(Tblock) == 0){
     warning("Missing measuring conditions. Check data collection conditions.")
     print(c(flow,par,CO2,Tblock))
     }
@@ -60,7 +60,7 @@ read.GX <- function(filename,leaf_rep,genolist,condition = FALSE){
   if(length(other)>1) {
     cat("check out these names, are they 3 digits? \n",other)
     cat("\nReformatting them into 3 digits...")
-    Sys.sleep(2)
+    Sys.sleep(2) # just makes me feel like this functino is useful and is actually taking some time to fix this digit number problem.
     table[grep("^[[:digit:]]{2}$",table$HHMMSS),"HHMMSS"] = paste("0",table[grep("^[[:digit:]]{2}$",table$HHMMSS),"HHMMSS"],sep="")
     table[grep("^[[:digit:]]{1}$",table$HHMMSS),"HHMMSS"] = paste("00",table[grep("^[[:digit:]]{1}$",table$HHMMSS),"HHMMSS"],sep="")
     cat("Done.")
