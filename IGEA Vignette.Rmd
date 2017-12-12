@@ -14,7 +14,7 @@ Photosythesis rate, water conductance and Ci/Ca (intercellular to ambient CO2 pa
 
 This R package is designed specifically for experimental projects that are currently going on in [Leakey Lab (UIUC)](https://lab.igb.illinois.edu/leakey/home). Recently Postoc Dr. Wertin applied a high-throughtput protocol for gas exchange measurements in this summer field season. The major improvement of this protocol involves harvesting leaves in the field and then conducting measurements in lab instead of taking the machine out in the field to the plants. This newer method allows us to measure more than 200 leafs (single 4-minute measurement on each leaf) per day, attributing to the fact that people don't need to carry around the heavy machine in the field under harsh sunlight. After being harvested from field and take back to lab, each leaf is kept hydrated by inserting its cut wound side into a 10 ml tube full of water. Leaves are rotationally incubated for half an hour in two lighted growth chambers prior to measurements since it takes that long to activate each leaf and let them function happily. Recording leaf's identity into LI-6400XT is done by adding "remarks" of leaf identity between two measurements. This is a bit old fashioned and also is where a big part of human errors come from that need to be fixed. Measurements are taken place after clamping the leaf for 4 minutes. 
 
-Example data provided in this tutorial is my real data collected in this summer. In order to better show the functions of my package as well as to have a reasonable data size, a part of my dataset is provided here. My experimental design is a RCBD with 2 blocks. With in each block, each genotype has its plot and there are 2 biological sampled within each plot. Due to the fact that here is a partial dataset, total reps for most genotypes are less than 4. 
+Example data provided in this tutorial is my real data collected in this summer. In order to better show the functions of my package as well as to have a reasonable data size, only a part of my dataset is provided here. My experimental design is a RCBD with 2 blocks. With in each block, each genotype has its plot and there are 2 biological sampled within each plot. Due to the fact that here is a partial dataset, total reps for most genotypes are less than 4. 
 
 ```{r include = FALSE}
 
@@ -31,7 +31,7 @@ source("~/GitHub/Instant-Gas-Exchange-Measurements/R/summary_GXmean.R")
 ```
 
 
-The aim of this package is to provide a pipeline of treating the standard output table from LI-6400XT. Measurements are first reformated, merged and screened to see abnormal measurements in ``read.GX`` and ``CS.GXcurve`` function. Then curves can be plotted so that outliers can be spotted and found, using ``plotGX`` and ``Find.GXcurve``. Values will be extracted from curves with function ``GetValue.GXcurve``. At last ``PGMean.GXvalue`` is unsed to calculate plot means and genotype means. ``summary.GXcurve``, ``summary.GXvalue``, ``summary.GXmean`` provide detailed information for corresponding class of data.
+The aim of this package is to provide a pipeline of treating the standard output table from LI-6400XT. Measurements are first reformated, merged and screened to see abnormal measurements in ``read.GX`` and ``CS.GXcurve`` function. Then curves can be plotted so that outliers can be spotted and found, using ``plotGX`` and ``Find.GXcurve``. Values will be extracted from curves with function ``GetValue.GXcurve``. At last ``PGMean.GXvalue`` is used to calculate plot means and genotype means. ``summary.GXcurve``, ``summary.GXvalue``, ``summary.GXmean`` provide detailed information for corresponding class of data.
 
 
 
@@ -80,8 +80,13 @@ str(leak1_718)
 
 ## CS_GXcurve
 
+CS_GXcurve does the job of combining and screening. Combining means two seperate ``GXcurve`` tables are merged based on rows due to the fact data structures should be the same after being read in. Also measurement condition attributes are deleted. Since dataset usually has a huge size, it is a lot of work to go through each measurement and screen for abnormal ones. 
 
-There are two types of value we calculate and include in our further experiment (like correlation with other traits): First, we find the biggest "water conductance" value in the first minute and take the corresponding "Photosythesis" and "Ci/Ca" values; Second, we take the means of these three parameters in the last minute. Currently we don't know which set of values are better representative but we hope further analysis will tell us more. After
+Screening part is the key to identify human errors made during measurements. It is impossible 
+Dataset has a huge
+
+
+
 
 
 ## plotGX
@@ -91,6 +96,9 @@ There are two types of value we calculate and include in our further experiment 
 
 
 ## GetValue.GXcurve
+
+There are two types of values we calculate and include in our further experiment (like correlations with other traits): First, we find the biggest "water conductance" value in the first minute and take the corresponding "Photosythesis" and "Ci/Ca" values; Second, we take the means of these three parameters in the last minute. Currently we don't know which set of values are better representative but we hope further analysis will tell us more. 
+
 
 
 ## PGMean.GXvalue
