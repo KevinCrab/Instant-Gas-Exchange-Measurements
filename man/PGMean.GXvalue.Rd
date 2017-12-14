@@ -1,4 +1,5 @@
 \name{PGMean.GXvalue}
+\alias{PGMean}
 \alias{PGMean.GXvalue}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
@@ -10,7 +11,8 @@ This function averages the replicates within plots or genotypes to get plot mean
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-PGMean.GXvalue(table, type)
+PGMean(table,...)
+\method{PGMean}{GXvalue}(table, type)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -25,7 +27,7 @@ PGMean.GXvalue(table, type)
 }
 
 \value{
-Returns a table with plot name or genotype name, replicate numbers within and mean parameter values and standard errors. 
+Returns a class \code{GXmean} dataframe with plot name or genotype name, replicate numbers within and mean parameter values and standard errors. 
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
@@ -44,8 +46,9 @@ Jiayang Xie <kevinxie@illinois.edu>
 
 \examples{
 # Assume AllValue is a GXvalue class table
-All_plot_Mean = PGMean(table = AllValue, type = "plot")
-All_geno_Mean = PGMean(table = AllValue, type = "genotype")
+data(AllValue)
+All_plot_Mean = PGMean.GXvalue(table = AllValue, type = "plot")
+All_geno_Mean = PGMean.GXvalue(table = AllValue, type = "genotype")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

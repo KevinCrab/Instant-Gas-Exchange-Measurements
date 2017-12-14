@@ -1,0 +1,193 @@
+---
+title: "Instant Gas Exchange Analysis (IGEA) package"
+output:
+  # pdf_document:
+  #   toc: yes
+  html_document:
+    toc: yes
+    toc_float: yes
+---
+
+## Introduction
+
+Photosythesis rate, water conductance and Ci/Ca (intercellular to ambient CO2 partial pressures) are three key plant physiological parameters in terms of carbon simulation and water use efficiency ( [Lawson and Blatt, 2014](http://www.plantphysiol.org/content/plantphysiol/164/4/1556.full.pdf); [Ellsworth and Cousins, 2016](http://www.sciencedirect.com/science/article/pii/S1369526616300632?via%3Dihub) ). In short, I will refer these three parameters as "gas exchange parameters"" in the following context. They can be measured simultaneously using LI-6400XT Portable Photosynthesis System [(LiCor Inc. Lincoln Nebraska, USA)](https://www.licor.com/env/products/photosynthesis/LI-6400XT/). The actual measurement procedure is relatively complex, but the short story is that you place the machine right next to the plant, clamp the leaf into the chamber, and initiate the autolog program. LI-6400XT records all the input parameters in time series and does the calculation to get those parameters that we care about.
+
+This R package is designed specifically for experimental projects that are currently going on in [Leakey Lab (UIUC)](https://lab.igb.illinois.edu/leakey/home). Recently Postoc Dr. Wertin applied a high-throughtput protocol for gas exchange measurements in this summer field season. The major improvement of this protocol involves harvesting leaves in the field and then conducting measurements in lab instead of taking the machine out in the field to the plants. This newer method allows us to measure more than 200 leafs (single 4-minute measurement on each leaf) per day, attributing to the fact that people don't need to carry around the heavy machine in the field under harsh sunlight. After being harvested from field and take back to lab, each leaf is kept hydrated by inserting its cut wound side into a 10 ml tube full of water. Leaves are rotationally incubated for half an hour in two lighted growth chambers prior to measurements since it takes that long to activate each leaf and let them function happily. Recording leaf's identity into LI-6400XT is done by adding "remarks" of leaf identity between two measurements. This is a bit old fashioned and also is where a big part of human errors come from that need to be fixed. Measurements are taken place after clamping the leaf for 4 minutes. 
+
+Example data provided in this tutorial is my real data collected in this summer. In order to better show the functions of my package as well as to have a reasonable data size, only a part of my dataset is provided here. My experimental design is a RCBD with 2 blocks. With in each block, each genotype has its plot and there are 2 biological sampled within each plot. Due to the fact that here is a partial dataset, total reps for most genotypes are less than 4. 
+
+```{r include = FALSE}
+
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/GXread.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/CS_GXcurve.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/GetValue_GXcurve.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/Find_GXcurve.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/plotGX.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/PGMean.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/summary_GXcurve.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/summary_GXvalue.R")
+source("~/GitHub/Instant-Gas-Exchange-Measurements/R/summary_GXmean.R")
+
+```
+
+
+The aim of this package is to provide a pipeline of treating the standard output table from LI-6400XT. Measurements are first reformated, merged and screened to see abnormal measurements in ``read.GX`` and ``CS.GXcurve`` function. Then curves can be plotted so that outliers can be spotted and found, using ``plotGX`` and ``Find.GXcurve``. Values will be extracted from curves with function ``GetValue.GXcurve``. At last ``PGMean.GXvalue`` is used to calculate plot means and genotype means. ``summary.GXcurve``, ``summary.GXvalue``, ``summary.GXmean`` provide detailed information for corresponding class of data.
+
+
+
+## read.GX
+
+Once you copied the raw output table from LI-6400, turn it into csv file. My files have a naming convention of "Operator + date + population + machine .csv". These data are provided in *inst/extdata* folder. These data has a long header, lots of parameters, ton of useless time remarks and relatively complicated structure. In short, they desperately need to be re-structured and re-organized.
+
+First we read them in. On each day we sample a whole set of replicates, thus, samples measured on 7-18 and 9-20 are leaf replicates 1 and samples measured on 7-19 and 7-21 are leaf replicates 2. ``genolist`` is a table listing all leaf identity remark names with corresponding genotype names so that ``read.GX`` can match and add genotype names for each measurement. After reading in, the output data has class of ``GXcurve``.
+
+If argument ``condition`` is ``TRUE``, the measurement conditions will be checked and printed. Some machines doesn't record all the conditions (like this case below). Warnings will pop out when the file has multiple conditions or incomplete conditions. Check or not, ``GXcurve`` file will include as many conditions as it recorded in the attributes. 
+
+```{r }
+leak1_718 = read.GX(filename = "~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_ril_leak1_.csv",leaf_rep = 1,genolist = "~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/genotypic_imformation.csv", condition = TRUE)
+```
+
+Notice in this dataset some name "remarks" have only 2 digits (operator's fault), which will cause trouble later. So all plot names have to unified into 3 digits. 
+
+```{r}
+
+getwd()
+
+
+steward_718 = read.GX(filename = "~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/TMW_07-18-2017_ril_stewart_.csv",leaf_rep = 1,genolist = "~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/genotypic_imformation.csv")
+```
+
+I omit the code of reading in the remaining csv files here. In total I read in 9 example dataset here: ``leak1_718``, ``leak2_718``, ``steward_718``, ``leak1_719``, ``leak1_720``, ``steward_720``, ``leak1_721``, ``leak2_721``, ``steward_721``
+
+```{r include = FALSE}
+leak2_718 = read.GX(filename = "~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_RIL_leak2_.csv",leaf_rep = 1,genolist = "~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/genotypic_imformation.csv")
+leak1_719 = read.GX(filename = "~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-19-2017_RIL_leak1.csv",leaf_rep = 2,genolist = "~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/genotypic_imformation.csv")
+leak1_720 = read.GX(filename = "~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/nicole-7-20-2017-ril_leak1.csv",leaf_rep = 1,genolist = "~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/genotypic_imformation.csv")
+steward_720 = read.GX(filename = "~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-20-2017_RIL_Stewart.csv",leaf_rep = 1,genolist = "~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/genotypic_imformation.csv")
+leak1_721 = read.GX(filename = "~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/cm_07-21-2017_ril_leak1_.csv",leaf_rep = 2,genolist = "~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/genotypic_imformation.csv")
+leak2_721 = read.GX(filename = "~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/cm_07-21-2017_ril_leak2_.csv",leaf_rep = 2,genolist = "~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/genotypic_imformation.csv")
+steward_721 = read.GX(filename = "~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-21-2017_RIL_STEWARD_.csv",leaf_rep = 2,genolist = "~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/genotypic_imformation.csv")
+```
+
+Let's take a look of the output.
+
+```{r}
+dim(leak1_718)
+head(leak1_718)
+str(leak1_718)
+
+```
+
+You can use ``summary`` to get some knowledge for ``GXcurve`` class objects such as meausurement counts, leaf rep number. Also you can take a look of parameter summary if ``value_summary`` is set to be ``TRUE``, as well as experimental conditions if you pass a character condition name to argument ``check_condition``. (choose from: measurement_time/machine/lightsource/AD.avgtime/flow/par/CO2_mixer/Tblock)
+```{r}
+summary(leak1_718,value_summary = TRUE, check_condition = "flow")
+```
+
+I want to add that, in short, in **IGEA** we call "Photosythesis" as "Photo", "Water Conductance" as "Cond", "intercellular to ambient CO2 partial pressures" as "Ci.Ca"
+
+## CS_GXcurve
+
+CS_GXcurve does the job of combining and screening. 
+
+Combining means that two seperate ``GXcurve`` tables are merged based on rows due to the fact data structures should be the same after being read in. Also measurement condition attributes are deleted. 
+
+Since dataset usually has a huge size, it is nearly impossible to go through each measurement and screen for abnormal measurements caused by human errors. Generally there are three kinds of human errors: 1. Duplicate names. Ideally the name recording for leaves are unique. But it is possible that during operation people accidentally put in a wrong name, resulting to a name duplication for another leaf. 2. Miss name recording. As mentioned before names are recorded by inserting "remarks" in between two measurements. Sometimes people forgot to add remark. 3. Recording Interruption. When recording, errors might occur or the position of leaf needs to be adjusted, thus leading to too few recording in that measurement. 
+
+Now we apply ``CS.GXcurve`` on my 9 seperate datasets. It will print out the measurements in each dataset and in total. In addition, if you have any one of the potential human errors mentioned above, you will know how many errors there are and sample names for each error. One thing that I think is handy is that these human error information will be a part of attributes of the ``GXcurve`` table and you can easily extract these information and target their location in the next function. 
+
+```{r}
+AllCurve = CS(leak1_718,leak2_718,leak1_719,leak1_720,leak1_721,leak2_721,steward_720,steward_721,steward_718)
+dim(AllCurve)
+```
+
+## Find.GXcurve
+``Find`` is designed to locate the measurement you are interested in. First argument you give it is the dataset that has the measurement you care about.  Each raw dataset that was merged earlier has a tag indicating the raw dataset name, so it allows the function to trace back to the location in the original dataset. After that you can put in character name of the measurement. 
+
+```{r}
+Find(AllCurve, id = "119_1")
+```
+
+Input can also be a character vector.
+
+```{r}
+Find(AllCurve, c("119_1","110_1"))
+```
+
+Since name list of the questionable measurements are stored in the ``GXcurve`` table attributes, we can easily pull it out by giving  ``TRUE`` to arguments ``DuplicateName``, ``MissRecording`` and ``TooSmall``. After getting the location and taking a look of them, we can make a judgement call how to deal with them (ignore them? delete them? etc.) 
+
+```{r}
+Find(AllCurve, DuplicateName = TRUE, MissRecording = TRUE, TooSmall = TRUE)
+```
+
+## plotGX
+After taking care of technical errors, we might want to know how our curves look like and identify outliers based on that. The arguments of ``plotGX`` might seem comfusing, but once you learn about it, you will see it has a big flexibiliy of how you want to give it the inputs. By the way, this function is relied on ``ggplot2``.
+
+First argument is ``trait``, which is straightforward. Choose one from "Photo", "Cond" or "Ci.Ca". One type of trait can be plotted at once.
+
+Measurements of the same genotype will be plotted together, so the outliers can be more stand out. PGN format Plots are saved into the working directory with a naming convention of "trait + genotype name.pgn". A sentence will pop out when each genotypic categorized measurement graph is drawn.
+
+There are three combination of choices in terms of telling ``Find`` which measurements to plot and they will be useful in different circumstances. 
+
+1. Give a ``GXcurve`` class object to argument ``table``. In this case every single measurement in this table will be ploted. This way will be helpful if you have a full dataset and want to plot out all the graphs at once. I don't want this whole page to be covered with ">>> curve saved" reminders so I test this function in a artificial dataset instead of ``AllCurve``. 
+
+```{r include = FALSE}
+library(ggplot2)
+```
+
+```{r}
+PlotExample = AllCurve[AllCurve$genotype %in% head(unique(AllCurve$genotype),3),]
+plotGX(trait = "Photo", table = PlotExample )
+
+```
+
+2. Type in character name of a genotype to ``genotype`` and give ``dataset`` the table that contains the chosen genotype. Now measurements from only one genotype is plotted. That genotype must be in the dataset provided.
+
+```{r}
+plotGX(trait = "Cond", genotype = "Z019E0032", dataset = AllCurve )
+```
+
+3. If you just want to look at a single measurement, you can type in character of the sample leaf to ``id`` and the dataset that contains it to ``dataset``. id must be in the dataset provided. 
+
+```{r}
+plotGX(trait = "Ci.Ca", id = "120_1" , dataset = AllCurve )
+```
+
+These three kinds of inputs have different scales, from biggest to smallest. Plotting can take some amount of time, take memories and could generate a longs list of PNG files, so it will be nice we can only plot the graphs that we want to look at.
+
+## GetValue.GXcurve
+
+There are two types of values we calculate and include in our further experiment (correlations with other traits etc.): First, we find the biggest "water conductance" value in the first minute and take the corresponding "Photosythesis" and "Ci/Ca" values; Second, we take the means of these three parameters in the last minute. Currently we don't know which set of values are better representative but we hope further analysis will tell us more. You can choose to calculate both types of values by defalt or just one of them by setting ``first.minute`` or ``last.minute`` to ``FALSE``. The first argument in the function should taka a ``GXcurve`` class table. 
+
+Each row in the output represents a single 4-minute measurement. This function returns a table of ``GXvalue`` class.
+```{r}
+AllValue = GetValue(AllCurve)
+head(AllValue)
+str(AllValue)
+```
+
+Apply ``summary`` function on ``GXvalue`` object could tell you what's the total entry number, how balanced our dataset look like (based on leaf rep numbers) and a peak of selected trait.
+```{r}
+summary(AllValue, "Photo_first")
+```
+
+## PGMean.GXvalue
+
+Once we got the values for each leaf sample, we can average the replicates in plots to get plot mean. Furthermore, since my experiment is RCBD with two blocks, I will need other softwares or packages to test for "block" effect and get BLUPs, but ``PGMean`` could still calculate genotype mean as a quick peak.
+
+It takes a ``GXvalue`` class table and you have to choose do you want "plot" mean or "genotype" mean. Standard errors are also calculated along with means. Due to the fact this example dataset is not complete, some plots only have 1 rep, so standard errors are left NA. In the end a ``GXmean`` class table is our output.
+
+```{r}
+All_Plot_Mean = PGMean.GXvalue(table = AllValue, type = "plot")
+head(All_Plot_Mean)
+All_Geno_Mean = PGMean.GXvalue(table = AllValue, type = "genotype")
+head(All_Geno_Mean)
+```
+
+Apply ``summary`` function on ``GXmean`` object could give you a rough idea how our values look like, as well as how complete your dataset is(based on rep numbers).
+```{r}
+summary(All_Geno_Mean, "Photo_first")
+```
+You probably noticed there are two genotypes that have way more reps than others, that's my parents as checks in the field.
+
+
+

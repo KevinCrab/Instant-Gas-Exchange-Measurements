@@ -1,0 +1,10 @@
+test = read.GX(filename,1,genolist)
+
+summary(test)
+
+aa = GetValue.GXcurve(test)
+
+summary(aa,"Photo_first")
+
+bb = PGMean.GXvalue(aa,"plot")
+?PGMean

@@ -1,4 +1,5 @@
 \name{GetValue.GXcurve}
+\alias{GetValue}
 \alias{GetValue.GXcurve}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
@@ -10,7 +11,8 @@ Calculate the first-minute-value and last-minute-value for each measurement.Firs
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-GetValue.GXcurve(table, first.minute = TRUE, last.minute = TRUE)
+GetValue(table, ...)
+\method{GetValue}{GXcurve}(table, first.minute = TRUE, last.minute = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -29,7 +31,7 @@ GetValue.GXcurve(table, first.minute = TRUE, last.minute = TRUE)
 }
 
 \value{
-Returns a row of values and identities for each measurement.
+Returns a data frame of GXvalue class. Each row are the values for desired parameters and leaf identity.
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
@@ -44,7 +46,8 @@ Jiayang Xie <kevinxie@illinois.edu>
 
 \examples{
 # Assume "AllCurve" is a GXcurve dataset
-GetValue.GXcurve(Allcurve, first.minute = TRUE, last.minute = TRUE)
+data(AllCurve)
+AllValue = GetValue.GXcurve(AllCurve, first.minute = TRUE, last.minute = TRUE)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

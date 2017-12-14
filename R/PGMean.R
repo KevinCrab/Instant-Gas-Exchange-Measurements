@@ -1,23 +1,9 @@
-PGMean = function(table,...){
+PGMean = function(table, ...){
   UseMethod("PGMean",table)
 }
 
 PGMean.GXvalue = function(table, type){
-  name = vector(mode="character", length=0)
-  leaf_replicate_number = vector(mode="numeric", length=0)
-  Photo_first = vector(mode="numeric", length=0)
-  SE1 = vector(mode="numeric", length=0)
-  Cond_first = vector(mode="numeric", length=0)
-  SE2 = vector(mode="numeric", length=0)
-  Ci.Ca_first = vector(mode="numeric", length=0)
-  SE3 = vector(mode="numeric", length=0)
-  Photo_last = vector(mode="numeric", length=0)
-  SE4 = vector(mode="numeric", length=0)
-  Cond_last = vector(mode="numeric", length=0)
-  SE5 = vector(mode="numeric", length=0)
-  Ci.Ca_last = vector(mode="numeric", length=0)
-  SE6 = vector(mode="numeric", length=0)
-  
+  # find corresponding column 
   if(type == "plot"){
     col = "plot_name"
   }
@@ -27,32 +13,36 @@ PGMean.GXvalue = function(table, type){
   if(! type %in% c("plot","genotype")){
     stop("Wrong type input. plot/genotype")
   }
-  
-  for (i in 1:length(unique(table[,col]))){
-    sub = table[which(table[,col] == unique(table[,col])[i]),]
-    name = c(name, sub[,col][1])
-    leaf_replicate_number = c(leaf_replicate_number, nrow(sub))
-    Photo_first = c(Photo_first, mean(sub$Photo_first))
-    SE1 = c(SE1, sd(sub$Photo_first)/sqrt(length(sub$Photo_first)))
-    Cond_first = c(Cond_first, mean(sub$Cond_first))
-    SE2 = c(SE2, sd(sub$Cond_first)/sqrt(length(sub$Cond_first)))
-    Ci.Ca_first = c(Ci.Ca_first, mean(sub$Ci.Ca_first))
-    SE3 = c(SE3, sd(sub$Ci.Ca_first)/sqrt(length(sub$Ci.Ca_first)))
-    Photo_last = c(Photo_last, mean(sub$Photo_last))
-    SE4 = c(SE4, sd(sub$Photo_last)/sqrt(length(sub$Photo_last)))
-    Cond_last = c(Cond_last, mean(sub$Cond_last))
-    SE5 = c(SE5, sd(sub$Cond_last)/sqrt(length(sub$Cond_last)))
-    Ci.Ca_last = c(Ci.Ca_last, mean(sub$Ci.Ca_last))
-    SE6 = c(SE6, sd(sub$Ci.Ca_last)/sqrt(length(sub$Ci.Ca_last)))
+  #define function to calculate standard error
+  se = function(x){
+    return(sd(x)/sqrt(length(x)))
   }
-  
-  out = data.frame(name, leaf_replicate_number, Photo_first, SE1, Cond_first, 
-                   SE2, Ci.Ca_first, SE3, Photo_last, SE4, Cond_last, SE5,
-                   Ci.Ca_last, SE6, stringsAsFactors = FALSE)
+  #use tapply to calculate mean and standard error
+  Photo_first = tapply(table$Photo_first, table[,col] , mean, na.rm = TRUE)
+  se1 = tapply(table$Photo_first, table[,col] , se)
+  Cond_first = tapply(table$Cond_first, table[,col] , mean, na.rm = TRUE)
+  se2 = tapply(table$Cond_first, table[,col] , se)
+  Ci.Ca_first = tapply(table$Ci.Ca_first, table[,col] , mean, na.rm = TRUE)
+  se3 = tapply(table$Ci.Ca_first, table[,col] , se)
+  Photo_last = tapply(table$Photo_last, table[,col] , mean, na.rm = TRUE)
+  se4 = tapply(table$Photo_last, table[,col] , se)
+  Cond_last = tapply(table$Cond_last, table[,col] , mean, na.rm = TRUE)
+  se5 = tapply(table$Cond_last, table[,col] , se)
+  Ci.Ca_last = tapply(table$Ci.Ca_last, table[,col] , mean, na.rm = TRUE)
+  se6 = tapply(table$Ci.Ca_last, table[,col] , se)
+  out = data.frame(Photo_first,se1,Cond_first,se2,Ci.Ca_first,se3,Photo_last,se4,
+             Cond_last,se5,Ci.Ca_last,se6)
+  out$name = rownames(out)
+  out$rep_number = table(table[,col])
+  #get rid of NA columns (if in the last GetValue function, only one of 
+  #first or last minute values was chosen)
   out = out[, colSums(is.na(out)) != nrow(out)]
-  
+  rownames(out) = 1:length(out$name)
+  # assign class and attributes
   class(out) = c("GXmean",class(out))
   attr(out, "type") = type
   return(out)
 }
+
+
 

@@ -224,30 +224,32 @@ div.tocify {
 <h2>Introduction</h2>
 <p>Photosythesis rate, water conductance and Ci/Ca (intercellular to ambient CO2 partial pressures) are three key plant physiological parameters in terms of carbon simulation and water use efficiency ( <a href="http://www.plantphysiol.org/content/plantphysiol/164/4/1556.full.pdf">Lawson and Blatt, 2014</a>; <a href="http://www.sciencedirect.com/science/article/pii/S1369526616300632?via%3Dihub">Ellsworth and Cousins, 2016</a> ). In short, I will refer these three parameters as “gas exchange parameters”&quot; in the following context. They can be measured simultaneously using LI-6400XT Portable Photosynthesis System <a href="https://www.licor.com/env/products/photosynthesis/LI-6400XT/">(LiCor Inc. Lincoln Nebraska, USA)</a>. The actual measurement procedure is relatively complex, but the short story is that you place the machine right next to the plant, clamp the leaf into the chamber, and initiate the autolog program. LI-6400XT records all the input parameters in time series and does the calculation to get those parameters that we care about.</p>
 <p>This R package is designed specifically for experimental projects that are currently going on in <a href="https://lab.igb.illinois.edu/leakey/home">Leakey Lab (UIUC)</a>. Recently Postoc Dr. Wertin applied a high-throughtput protocol for gas exchange measurements in this summer field season. The major improvement of this protocol involves harvesting leaves in the field and then conducting measurements in lab instead of taking the machine out in the field to the plants. This newer method allows us to measure more than 200 leafs (single 4-minute measurement on each leaf) per day, attributing to the fact that people don’t need to carry around the heavy machine in the field under harsh sunlight. After being harvested from field and take back to lab, each leaf is kept hydrated by inserting its cut wound side into a 10 ml tube full of water. Leaves are rotationally incubated for half an hour in two lighted growth chambers prior to measurements since it takes that long to activate each leaf and let them function happily. Recording leaf’s identity into LI-6400XT is done by adding “remarks” of leaf identity between two measurements. This is a bit old fashioned and also is where a big part of human errors come from that need to be fixed. Measurements are taken place after clamping the leaf for 4 minutes.</p>
-<p>Example data provided in this tutorial is my real data collected in this summer. In order to better show the functions of my package as well as to have a reasonable data size, a part of my dataset is provided here. My experimental design is a RCBD with 2 blocks. With in each block, each genotype has its plot and there are 2 biological sampled within each plot. Due to the fact that here is a partial dataset, total reps for most genotypes are less than 4.</p>
-<p>The aim of this package is to provide a pipeline of treating the standard output table from LI-6400XT. Measurements are first reformated, merged and screened to see abnormal measurements in <code>read.GX</code> and <code>CS.GXcurve</code> function. Then curves can be plotted so that outliers can be spotted and found, using <code>plotGX</code> and <code>Find.GXcurve</code>. Values will be extracted from curves with function <code>GetValue.GXcurve</code>. At last <code>PGMean.GXvalue</code> is unsed to calculate plot means and genotype means. <code>summary.GXcurve</code>, <code>summary.GXvalue</code>, <code>summary.GXmean</code> provide detailed information for corresponding class of data.</p>
+<p>Example data provided in this tutorial is my real data collected in this summer. In order to better show the functions of my package as well as to have a reasonable data size, only a part of my dataset is provided here. My experimental design is a RCBD with 2 blocks. With in each block, each genotype has its plot and there are 2 biological sampled within each plot. Due to the fact that here is a partial dataset, total reps for most genotypes are less than 4.</p>
+<p>The aim of this package is to provide a pipeline of treating the standard output table from LI-6400XT. Measurements are first reformated, merged and screened to see abnormal measurements in <code>read.GX</code> and <code>CS.GXcurve</code> function. Then curves can be plotted so that outliers can be spotted and found, using <code>plotGX</code> and <code>Find.GXcurve</code>. Values will be extracted from curves with function <code>GetValue.GXcurve</code>. At last <code>PGMean.GXvalue</code> is used to calculate plot means and genotype means. <code>summary.GXcurve</code>, <code>summary.GXvalue</code>, <code>summary.GXmean</code> provide detailed information for corresponding class of data.</p>
 </div>
 <div id="read.gx" class="section level2">
 <h2>read.GX</h2>
 <p>Once you copied the raw output table from LI-6400, turn it into csv file. My files have a naming convention of “Operator + date + population + machine .csv”. These data are provided in <em>inst/extdata</em> folder. These data has a long header, lots of parameters, ton of useless time remarks and relatively complicated structure. In short, they desperately need to be re-structured and re-organized.</p>
 <p>First we read them in. On each day we sample a whole set of replicates, thus, samples measured on 7-18 and 9-20 are leaf replicates 1 and samples measured on 7-19 and 7-21 are leaf replicates 2. <code>genolist</code> is a table listing all leaf identity remark names with corresponding genotype names so that <code>read.GX</code> can match and add genotype names for each measurement. After reading in, the output data has class of <code>GXcurve</code>.</p>
 <p>If argument <code>condition</code> is <code>TRUE</code>, the measurement conditions will be checked and printed. Some machines doesn’t record all the conditions (like this case below). Warnings will pop out when the file has multiple conditions or incomplete conditions. Check or not, <code>GXcurve</code> file will include as many conditions as it recorded in the attributes.</p>
-<pre class="r"><code>leak1_718 = read.GX(filename = &quot;~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX 07-18-2017 ril leak1_.csv&quot;,leaf_rep = 1,genolist = &quot;~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/genotypic imformation.csv&quot;, condition = TRUE)</code></pre>
+<pre class="r"><code>leak1_718 = read.GX(filename = &quot;~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_ril_leak1_.csv&quot;,leaf_rep = 1,genolist = &quot;~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/genotypic_imformation.csv&quot;, condition = TRUE)</code></pre>
 <pre><code>## Warning in read.GX(filename = &quot;~/GitHub/Instant-Gas-Exchange-Measurements/
-## inst/extdata/KX 07-18-2017 ril leak1_.csv&quot;, : Missing measuring conditions.
+## inst/extdata/KX_07-18-2017_ril_leak1_.csv&quot;, : Missing measuring conditions.
 ## Check data collection conditions.</code></pre>
 <pre><code>## [1] &quot;Flow: Fixed -&gt; 400 umol/s&quot;</code></pre>
 <p>Notice in this dataset some name “remarks” have only 2 digits (operator’s fault), which will cause trouble later. So all plot names have to unified into 3 digits.</p>
 <pre class="r"><code>getwd()</code></pre>
 <pre><code>## [1] &quot;C:/Users/xieji/Documents/GitHub/Instant-Gas-Exchange-Measurements&quot;</code></pre>
-<pre class="r"><code>steward_718 = read.GX(filename = &quot;~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/TMW 07-18-2017 ril stewart_.csv&quot;,leaf_rep = 1,genolist = &quot;~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/genotypic imformation.csv&quot;)</code></pre>
+<pre class="r"><code>steward_718 = read.GX(filename = &quot;~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/TMW_07-18-2017_ril_stewart_.csv&quot;,leaf_rep = 1,genolist = &quot;~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/genotypic_imformation.csv&quot;)</code></pre>
 <pre><code>## check out these names, are they 3 digits? 
 ##  46 21
 ## Reformatting them into 3 digits...Done.</code></pre>
 <p>I omit the code of reading in the remaining csv files here. In total I read in 9 example dataset here: <code>leak1_718</code>, <code>leak2_718</code>, <code>steward_718</code>, <code>leak1_719</code>, <code>leak1_720</code>, <code>steward_720</code>, <code>leak1_721</code>, <code>leak2_721</code>, <code>steward_721</code></p>
 <p>Let’s take a look of the output.</p>
+<pre class="r"><code>dim(leak1_718)</code></pre>
+<pre><code>## [1] 2958   12</code></pre>
 <pre class="r"><code>head(leak1_718)</code></pre>
-<pre><code>##   plot leaf  name FTime    Photo      Cond     Ci/Ca
+<pre><code>##   plot leaf  name FTime    Photo      Cond     Ci.Ca
 ## 1  120    1 120_1   0.0 26.64295 0.3362342 0.6404562
 ## 2  120    1 120_1   4.0 27.19798 0.3445699 0.6399731
 ## 3  120    1 120_1   8.0 27.89171 0.3523109 0.6374865
@@ -255,12 +257,12 @@ div.tocify {
 ## 5  120    1 120_1  16.5 28.92169 0.3582615 0.6288751
 ## 6  120    1 120_1  20.5 29.13794 0.3606656 0.6281220
 ##                                                                                    tag
-## 1 ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX 07-18-2017 ril leak1_.csv
-## 2 ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX 07-18-2017 ril leak1_.csv
-## 3 ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX 07-18-2017 ril leak1_.csv
-## 4 ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX 07-18-2017 ril leak1_.csv
-## 5 ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX 07-18-2017 ril leak1_.csv
-## 6 ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX 07-18-2017 ril leak1_.csv
+## 1 ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_ril_leak1_.csv
+## 2 ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_ril_leak1_.csv
+## 3 ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_ril_leak1_.csv
+## 4 ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_ril_leak1_.csv
+## 5 ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_ril_leak1_.csv
+## 6 ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_ril_leak1_.csv
 ##    genotype range row block
 ## 1 Z019E0032     4  17   1_3
 ## 2 Z019E0032     4  17   1_3
@@ -276,8 +278,8 @@ div.tocify {
 ##  $ FTime   : num  0 4 8 12 16.5 ...
 ##  $ Photo   : num  26.6 27.2 27.9 28.6 28.9 ...
 ##  $ Cond    : num  0.336 0.345 0.352 0.355 0.358 ...
-##  $ Ci/Ca   : num  0.64 0.64 0.637 0.631 0.629 ...
-##  $ tag     : chr  &quot;~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX 07-18-2017 ril leak1_.csv&quot; &quot;~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX 07-18-2017 ril leak1_.csv&quot; &quot;~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX 07-18-2017 ril leak1_.csv&quot; &quot;~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX 07-18-2017 ril leak1_.csv&quot; ...
+##  $ Ci.Ca   : num  0.64 0.64 0.637 0.631 0.629 ...
+##  $ tag     : chr  &quot;~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_ril_leak1_.csv&quot; &quot;~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_ril_leak1_.csv&quot; &quot;~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_ril_leak1_.csv&quot; &quot;~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_ril_leak1_.csv&quot; ...
 ##  $ genotype: chr  &quot;Z019E0032&quot; &quot;Z019E0032&quot; &quot;Z019E0032&quot; &quot;Z019E0032&quot; ...
 ##  $ range   : chr  &quot; 4&quot; &quot; 4&quot; &quot; 4&quot; &quot; 4&quot; ...
 ##  $ row     : chr  &quot;17&quot; &quot;17&quot; &quot;17&quot; &quot;17&quot; ...
@@ -290,25 +292,700 @@ div.tocify {
 ##  - attr(*, &quot;par&quot;)= chr 
 ##  - attr(*, &quot;CO2_mixer&quot;)= chr 
 ##  - attr(*, &quot;Tblock&quot;)= chr</code></pre>
+<p>You can use <code>summary</code> to get some knowledge for <code>GXcurve</code> class objects such as meausurement counts, leaf rep number. Also you can take a look of parameter summary if <code>value_summary</code> is set to be <code>TRUE</code>, as well as experimental conditions if you pass a character condition name to argument <code>check_condition</code>. (choose from: measurement_time/machine/lightsource/AD.avgtime/flow/par/CO2_mixer/Tblock)</p>
+<pre class="r"><code>summary(leak1_718,value_summary = TRUE, check_condition = &quot;flow&quot;)</code></pre>
+<pre><code>## [1] &quot;Measurent count: 51&quot;
+## [1] &quot;leaf number: 1  observation counts: 2958&quot;
+## 
+## ### Data set included: 
+## ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_ril_leak1_.csv
+## [1] &quot;Summary for Photosynthesis rate:&quot;
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+## -106.97   27.81   30.26   29.70   32.79   38.88 
+## [1] &quot;Summary for water conductance:&quot;
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+## 0.07171 0.22126 0.29248 0.29967 0.36324 0.65902 
+## [1] &quot;Summary for Ci.Ca:&quot;
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##  0.2067  0.4348  0.5263  0.5117  0.5938  2.6480 
+## 
+## Looking at flow :
+## [1] &quot;Flow: Fixed -&gt; 400 umol/s&quot;</code></pre>
+<p>I want to add that, in short, in <strong>IGEA</strong> we call “Photosythesis” as “Photo”, “Water Conductance” as “Cond”, “intercellular to ambient CO2 partial pressures” as “Ci.Ca”</p>
 </div>
 <div id="cs_gxcurve" class="section level2">
 <h2>CS_GXcurve</h2>
-<p>There are two types of value we calculate and include in our further experiment (like correlation with other traits): First, we find the biggest “water conductance” value in the first minute and take the corresponding “Photosythesis” and “Ci/Ca” values; Second, we take the means of these three parameters in the last minute. Currently we don’t know which set of values are better representative but we hope further analysis will tell us more. After</p>
-</div>
-<div id="plotgx" class="section level2">
-<h2>plotGX</h2>
+<p>CS_GXcurve does the job of combining and screening.</p>
+<p>Combining means that two seperate <code>GXcurve</code> tables are merged based on rows due to the fact data structures should be the same after being read in. Also measurement condition attributes are deleted.</p>
+<p>Since dataset usually has a huge size, it is nearly impossible to go through each measurement and screen for abnormal measurements caused by human errors. Generally there are three kinds of human errors: 1. Duplicate names. Ideally the name recording for leaves are unique. But it is possible that during operation people accidentally put in a wrong name, resulting to a name duplication for another leaf. 2. Miss name recording. As mentioned before names are recorded by inserting “remarks” in between two measurements. Sometimes people forgot to add remark. 3. Recording Interruption. When recording, errors might occur or the position of leaf needs to be adjusted, thus leading to too few recording in that measurement.</p>
+<p>Now we apply <code>CS.GXcurve</code> on my 9 seperate datasets. It will print out the measurements in each dataset and in total. In addition, if you have any one of the potential human errors mentioned above, you will know how many errors there are and sample names for each error. One thing that I think is handy is that these human error information will be a part of attributes of the <code>GXcurve</code> table and you can easily extract these information and target their location in the next function.</p>
+<pre class="r"><code>AllCurve = CS(leak1_718,leak2_718,leak1_719,leak1_720,leak1_721,leak2_721,steward_720,steward_721,steward_718)</code></pre>
+<pre><code>## input 1 / ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_ril_leak1_.csv : 51 entries
+## input 2 / ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_RIL_leak2_.csv : 49 entries
+## input 3 / ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-19-2017_RIL_leak1.csv : 51 entries
+## input 4 / ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/nicole-7-20-2017-ril_leak1.csv : 54 entries
+## input 5 / ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/cm_07-21-2017_ril_leak1_.csv : 53 entries
+## input 6 / ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/cm_07-21-2017_ril_leak2_.csv : 53 entries
+## input 7 / ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-20-2017_RIL_Stewart.csv : 50 entries
+## input 8 / ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-21-2017_RIL_STEWARD_.csv : 48 entries
+## input 9 / ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/TMW_07-18-2017_ril_stewart_.csv : 52 entries
+## overall combining 461 entries
+## 
+## [1] &quot;&gt;&gt;&gt; Walch out! You have 7 case(s) in which you have duplicate entry names. Better check out raw data:&quot;
+## [1] &quot;007_1&quot; &quot;117_1&quot; &quot;118_1&quot; &quot;169_1&quot; &quot;279_2&quot; &quot;326_2&quot; &quot;374_2&quot;
+## [1] &quot;&gt;&gt;&gt; Walch out! You have 1 case(s) in which you have too few( 49 ) gas exchange recordings. Better check out raw data:&quot;
+## [1] &quot;016_1&quot;
+## [1] &quot;&gt;&gt;&gt; Walch out! You have 2 case(s) in which you have missing name recording between two seperate measurements Better check out raw data:&quot;
+## [1] &quot;220_2&quot; &quot;373_1&quot;</code></pre>
+<pre class="r"><code>dim(AllCurve)</code></pre>
+<pre><code>## [1] 26839    12</code></pre>
 </div>
 <div id="find.gxcurve" class="section level2">
 <h2>Find.GXcurve</h2>
+<p><code>Find</code> is designed to locate the measurement you are interested in. First argument you give it is the dataset that has the measurement you care about. Each raw dataset that was merged earlier has a tag indicating the raw dataset name, so it allows the function to trace back to the location in the original dataset. After that you can put in character name of the measurement.</p>
+<pre class="r"><code>Find(AllCurve, id = &quot;119_1&quot;)</code></pre>
+<pre><code>## 
+## &gt;&gt;&gt;1th sample name:119_1    issue: input 
+## [1] &quot;2089th to 2146th observation (58 counts) in ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_ril_leak1_.csv&quot;</code></pre>
+<p>Input can also be a character vector.</p>
+<pre class="r"><code>Find(AllCurve, c(&quot;119_1&quot;,&quot;110_1&quot;))</code></pre>
+<pre><code>## 
+## &gt;&gt;&gt;1th sample name:119_1    issue: input 
+## [1] &quot;2089th to 2146th observation (58 counts) in ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_ril_leak1_.csv&quot;
+## 
+## &gt;&gt;&gt;2th sample name:110_1    issue: input 
+## [1] &quot;4632th to 4689th observation (58 counts) in ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_RIL_leak2_.csv&quot;</code></pre>
+<p>Since name list of the questionable measurements are stored in the <code>GXcurve</code> table attributes, we can easily pull it out by giving <code>TRUE</code> to arguments <code>DuplicateName</code>, <code>MissRecording</code> and <code>TooSmall</code>. After getting the location and taking a look of them, we can make a judgement call how to deal with them (ignore them? delete them? etc.)</p>
+<pre class="r"><code>Find(AllCurve, DuplicateName = TRUE, MissRecording = TRUE, TooSmall = TRUE)</code></pre>
+<pre><code>## 
+## &gt;&gt;&gt;1th sample name:007_1    issue: Duplicate name 
+## [1] &quot;4409th to 4466th observation (58 counts) in ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_RIL_leak2_.csv&quot;
+## [2] &quot;4516th to 4573th observation (58 counts) in ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_RIL_leak2_.csv&quot;
+## 
+## &gt;&gt;&gt;2th sample name:117_1    issue: Duplicate name 
+## [1] &quot;1741th to 1798th observation (58 counts) in ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_ril_leak1_.csv&quot;     
+## [2] &quot;24637th to 24694th observation (58 counts) in ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/TMW_07-18-2017_ril_stewart_.csv&quot;
+## 
+## &gt;&gt;&gt;3th sample name:118_1    issue: Duplicate name 
+## [1] &quot;4690th to 4747th observation (58 counts) in ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_RIL_leak2_.csv&quot;     
+## [2] &quot;24000th to 24057th observation (58 counts) in ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/TMW_07-18-2017_ril_stewart_.csv&quot;
+## 
+## &gt;&gt;&gt;4th sample name:169_1    issue: Duplicate name 
+## [1] &quot;871th to 928th observation (58 counts) in ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_ril_leak1_.csv&quot;       
+## [2] &quot;26666th to 26723th observation (58 counts) in ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/TMW_07-18-2017_ril_stewart_.csv&quot;
+## 
+## &gt;&gt;&gt;5th sample name:279_2    issue: Duplicate name 
+## [1] &quot;15186th to 15243th observation (58 counts) in ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/cm_07-21-2017_ril_leak2_.csv&quot;
+## [2] &quot;16577th to 16634th observation (58 counts) in ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/cm_07-21-2017_ril_leak2_.csv&quot;
+## 
+## &gt;&gt;&gt;6th sample name:326_2    issue: Duplicate name 
+## [1] &quot;11997th to 12054th observation (58 counts) in ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/cm_07-21-2017_ril_leak1_.csv&quot;
+## [2] &quot;17505th to 17562th observation (58 counts) in ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/cm_07-21-2017_ril_leak2_.csv&quot;
+## 
+## &gt;&gt;&gt;7th sample name:374_2    issue: Duplicate name 
+## [1] &quot;12287th to 12344th observation (58 counts) in ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/cm_07-21-2017_ril_leak1_.csv&quot;
+## [2] &quot;12519th to 12576th observation (58 counts) in ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/cm_07-21-2017_ril_leak1_.csv&quot;
+## 
+## &gt;&gt;&gt;8th sample name:220_2    issue: Missrecording 
+## [1] &quot;17563th to 17678th observation (116 counts) in ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/cm_07-21-2017_ril_leak2_.csv&quot;
+## 
+## &gt;&gt;&gt;9th sample name:373_1    issue: Missrecording 
+## [1] &quot;10431th to 10546th observation (116 counts) in ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/nicole-7-20-2017-ril_leak1.csv&quot;
+## 
+## &gt;&gt;&gt;10th sample name:016_1    issue: too few observations 
+## [1] &quot;4467th to 4515th observation (49 counts) in ~/GitHub/Instant-Gas-Exchange-Measurements/inst/extdata/KX_07-18-2017_RIL_leak2_.csv&quot;</code></pre>
+</div>
+<div id="plotgx" class="section level2">
+<h2>plotGX</h2>
+<p>After taking care of technical errors, we might want to know how our curves look like and identify outliers based on that. The arguments of <code>plotGX</code> might seem comfusing, but once you learn about it, you will see it has a big flexibiliy of how you want to give it the inputs. By the way, this function is relied on <code>ggplot2</code>.</p>
+<p>First argument is <code>trait</code>, which is straightforward. Choose one from “Photo”, “Cond” or “Ci.Ca”. One type of trait can be plotted at once.</p>
+<p>Measurements of the same genotype will be plotted together, so the outliers can be more stand out. PGN format Plots are saved into the working directory with a naming convention of “trait + genotype name.pgn”. A sentence will pop out when each genotypic categorized measurement graph is drawn.</p>
+<p>There are three combination of choices in terms of telling <code>Find</code> which measurements to plot and they will be useful in different circumstances.</p>
+<ol style="list-style-type: decimal">
+<li>Give a <code>GXcurve</code> class object to argument <code>table</code>. In this case every single measurement in this table will be ploted. This way will be helpful if you have a full dataset and want to plot out all the graphs at once. I don’t want this whole page to be covered with “&gt;&gt;&gt; curve saved” reminders so I test this function in a artificial dataset instead of <code>AllCurve</code>.</li>
+</ol>
+<pre class="r"><code>PlotExample = AllCurve[AllCurve$genotype %in% head(unique(AllCurve$genotype),3),]
+plotGX(trait = &quot;Photo&quot;, table = PlotExample )</code></pre>
+<pre><code>## Saving 7 x 5 in image</code></pre>
+<pre><code>## &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; Z019E0032 Photo curve saved</code></pre>
+<pre><code>## Saving 7 x 5 in image</code></pre>
+<pre><code>## &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; Z019E0131 Photo curve saved</code></pre>
+<pre><code>## Saving 7 x 5 in image</code></pre>
+<pre><code>## &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; Z019E0142 Photo curve saved</code></pre>
+<ol start="2" style="list-style-type: decimal">
+<li>Type in character name of a genotype to <code>genotype</code> and give <code>dataset</code> the table that contains the chosen genotype. Now measurements from only one genotype is plotted. That genotype must be in the dataset provided.</li>
+</ol>
+<pre class="r"><code>plotGX(trait = &quot;Cond&quot;, genotype = &quot;Z019E0032&quot;, dataset = AllCurve )</code></pre>
+<pre><code>## Saving 7 x 5 in image</code></pre>
+<pre><code>## &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; Z019E0032 Cond curve saved</code></pre>
+<ol start="3" style="list-style-type: decimal">
+<li>If you just want to look at a single measurement, you can type in character of the sample leaf to <code>id</code> and the dataset that contains it to <code>dataset</code>. id must be in the dataset provided.</li>
+</ol>
+<pre class="r"><code>plotGX(trait = &quot;Ci.Ca&quot;, id = &quot;120_1&quot; , dataset = AllCurve )</code></pre>
+<pre><code>## Saving 7 x 5 in image</code></pre>
+<pre><code>## &gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt;&gt; Z019E0032 Ci.Ca curve saved</code></pre>
+<p>These three kinds of inputs have different scales, from biggest to smallest. Plotting can take some amount of time, take memories and could generate a longs list of PNG files, so it will be nice we can only plot the graphs that we want to look at.</p>
 </div>
 <div id="getvalue.gxcurve" class="section level2">
 <h2>GetValue.GXcurve</h2>
+<p>There are two types of values we calculate and include in our further experiment (correlations with other traits etc.): First, we find the biggest “water conductance” value in the first minute and take the corresponding “Photosythesis” and “Ci/Ca” values; Second, we take the means of these three parameters in the last minute. Currently we don’t know which set of values are better representative but we hope further analysis will tell us more. You can choose to calculate both types of values by defalt or just one of them by setting <code>first.minute</code> or <code>last.minute</code> to <code>FALSE</code>. The first argument in the function should taka a <code>GXcurve</code> class table.</p>
+<p>Each row in the output represents a single 4-minute measurement. This function returns a table of <code>GXvalue</code> class.</p>
+<pre class="r"><code>AllValue = GetValue(AllCurve)</code></pre>
+<pre><code>## 1 getting value for ---- 120_1 
+## 2 getting value for ---- 132_1 
+## 3 getting value for ---- 035_1 
+## 4 getting value for ---- 111_1 
+## 5 getting value for ---- 058_1 
+## 6 getting value for ---- 174_1 
+## 7 getting value for ---- 107_1 
+## 8 getting value for ---- 173_1 
+## 9 getting value for ---- 064_1 
+## 10 getting value for ---- 057_1 
+## 11 getting value for ---- 047_1 
+## 12 getting value for ---- 053_1 
+## 13 getting value for ---- 045_1 
+## 14 getting value for ---- 165_1 
+## 15 getting value for ---- 054_1 
+## 16 getting value for ---- 169_1 
+## 17 getting value for ---- 044_1 
+## 18 getting value for ---- 055_1 
+## 19 getting value for ---- 139_1 
+## 20 getting value for ---- 038_1 
+## 21 getting value for ---- 153_1 
+## 22 getting value for ---- 168_1 
+## 23 getting value for ---- 161_1 
+## 24 getting value for ---- 166_1 
+## 25 getting value for ---- 159_1 
+## 26 getting value for ---- 164_1 
+## 27 getting value for ---- 194_1 
+## 28 getting value for ---- 070_1 
+## 29 getting value for ---- 071_1 
+## 30 getting value for ---- 072_1 
+## 31 getting value for ---- 117_1 
+## 32 getting value for ---- 034_1 
+## 33 getting value for ---- 181_1 
+## 34 getting value for ---- 091_1 
+## 35 getting value for ---- 115_1 
+## 36 getting value for ---- 081_1 
+## 37 getting value for ---- 119_1 
+## 38 getting value for ---- 085_1 
+## 39 getting value for ---- 204_1 
+## 40 getting value for ---- 077_1 
+## 41 getting value for ---- 197_1 
+## 42 getting value for ---- 082_1 
+## 43 getting value for ---- 088_1 
+## 44 getting value for ---- 096_1 
+## 45 getting value for ---- 012_1 
+## 46 getting value for ---- 101_1 
+## 47 getting value for ---- 005_1 
+## 48 getting value for ---- 027_1 
+## 49 getting value for ---- 010_1 
+## 50 getting value for ---- 022_1 
+## 51 getting value for ---- 031_1 
+## 52 getting value for ---- 112_1 
+## 53 getting value for ---- 191_1 
+## 54 getting value for ---- 068_1 
+## 55 getting value for ---- 039_1 
+## 56 getting value for ---- 130_1 
+## 57 getting value for ---- 108_1 
+## 58 getting value for ---- 176_1 
+## 59 getting value for ---- 037_1 
+## 60 getting value for ---- 040_1 
+## 61 getting value for ---- 129_1 
+## 62 getting value for ---- 048_1 
+## 63 getting value for ---- 049_1 
+## 64 getting value for ---- 141_1 
+## 65 getting value for ---- 066_1 
+## 66 getting value for ---- 042_1 
+## 67 getting value for ---- 067_1 
+## 68 getting value for ---- 063_1 
+## 69 getting value for ---- 036_1 
+## 70 getting value for ---- 170_1 
+## 71 getting value for ---- 143_1 
+## 72 getting value for ---- 149_1 
+## 73 getting value for ---- 163_1 
+## 74 getting value for ---- 144_1 
+## 75 getting value for ---- 187_1 
+## 76 getting value for ---- 142_1 
+## 77 getting value for ---- 007_1 
+## 78 getting value for ---- 016_1 
+## 79 getting value for ---- 033_1 
+## 80 getting value for ---- 110_1 
+## 81 getting value for ---- 118_1 
+## 82 getting value for ---- 185_1 
+## 83 getting value for ---- 084_1 
+## 84 getting value for ---- 104_1 
+## 85 getting value for ---- 093_1 
+## 86 getting value for ---- 073_1 
+## 87 getting value for ---- 074_1 
+## 88 getting value for ---- 094_1 
+## 89 getting value for ---- 080_1 
+## 90 getting value for ---- 195_1 
+## 91 getting value for ---- 079_1 
+## 92 getting value for ---- 097_1 
+## 93 getting value for ---- 023_1 
+## 94 getting value for ---- 029_1 
+## 95 getting value for ---- 099_1 
+## 96 getting value for ---- 020_1 
+## 97 getting value for ---- 051_1 
+## 98 getting value for ---- 025_1 
+## 99 getting value for ---- 026_1 
+## 100 getting value for ---- 016_2 
+## 101 getting value for ---- 003_2 
+## 102 getting value for ---- 170_2 
+## 103 getting value for ---- 051_2 
+## 104 getting value for ---- 014_2 
+## 105 getting value for ---- 046_2 
+## 106 getting value for ---- 158_2 
+## 107 getting value for ---- 161_2 
+## 108 getting value for ---- 035_2 
+## 109 getting value for ---- 178_2 
+## 110 getting value for ---- 116_2 
+## 111 getting value for ---- 168_2 
+## 112 getting value for ---- 063_2 
+## 113 getting value for ---- 176_2 
+## 114 getting value for ---- 117_2 
+## 115 getting value for ---- 124_2 
+## 116 getting value for ---- 123_2 
+## 117 getting value for ---- 068_2 
+## 118 getting value for ---- 106_2 
+## 119 getting value for ---- 167_2 
+## 120 getting value for ---- 058_2 
+## 121 getting value for ---- 066_2 
+## 122 getting value for ---- 062_2 
+## 123 getting value for ---- 166_2 
+## 124 getting value for ---- 162_2 
+## 125 getting value for ---- 037_2 
+## 126 getting value for ---- 038_2 
+## 127 getting value for ---- 153_2 
+## 128 getting value for ---- 154_2 
+## 129 getting value for ---- 059_2 
+## 130 getting value for ---- 060_2 
+## 131 getting value for ---- 107_2 
+## 132 getting value for ---- 055_2 
+## 133 getting value for ---- 048_2 
+## 134 getting value for ---- 203_2 
+## 135 getting value for ---- 080_2 
+## 136 getting value for ---- 095_2 
+## 137 getting value for ---- 204_2 
+## 138 getting value for ---- 201_2 
+## 139 getting value for ---- 024_2 
+## 140 getting value for ---- 139_2 
+## 141 getting value for ---- 138_2 
+## 142 getting value for ---- 143_2 
+## 143 getting value for ---- 145_2 
+## 144 getting value for ---- 196_2 
+## 145 getting value for ---- 098_2 
+## 146 getting value for ---- 092_2 
+## 147 getting value for ---- 097_2 
+## 148 getting value for ---- 202_2 
+## 149 getting value for ---- 109_2 
+## 150 getting value for ---- 093_2 
+## 151 getting value for ---- 400_1 
+## 152 getting value for ---- 399_1 
+## 153 getting value for ---- 404_1 
+## 154 getting value for ---- 274_1 
+## 155 getting value for ---- 397_1 
+## 156 getting value for ---- 289_1 
+## 157 getting value for ---- 306_1 
+## 158 getting value for ---- 279_1 
+## 159 getting value for ---- 286_1 
+## 160 getting value for ---- 394_1 
+## 161 getting value for ---- 258_1 
+## 162 getting value for ---- 208_1 
+## 163 getting value for ---- 217_1 
+## 164 getting value for ---- 260_1 
+## 165 getting value for ---- 342_1 
+## 166 getting value for ---- 220_1 
+## 167 getting value for ---- 345_1 
+## 168 getting value for ---- 231_1 
+## 169 getting value for ---- 205_1 
+## 170 getting value for ---- 230_1 
+## 171 getting value for ---- 245_1 
+## 172 getting value for ---- 382_1 
+## 173 getting value for ---- 346_1 
+## 174 getting value for ---- 262_1 
+## 175 getting value for ---- 377_1 
+## 176 getting value for ---- 393_1 
+## 177 getting value for ---- 291_1 
+## 178 getting value for ---- 351_1 
+## 179 getting value for ---- 374_1 
+## 180 getting value for ---- 373_1 
+## 181 getting value for ---- 361_1 
+## 182 getting value for ---- 383_1 
+## 183 getting value for ---- 321_1 
+## 184 getting value for ---- 319_1 
+## 185 getting value for ---- 360_1 
+## 186 getting value for ---- 243_1 
+## 187 getting value for ---- 385_1 
+## 188 getting value for ---- 327_1 
+## 189 getting value for ---- 323_1 
+## 190 getting value for ---- 340_1 
+## 191 getting value for ---- 240_1 
+## 192 getting value for ---- 019_1 
+## 193 getting value for ---- 322_1 
+## 194 getting value for ---- 325_1 
+## 195 getting value for ---- 307_1 
+## 196 getting value for ---- 300_1 
+## 197 getting value for ---- 363_1 
+## 198 getting value for ---- 405_1 
+## 199 getting value for ---- 371_1 
+## 200 getting value for ---- 370_1 
+## 201 getting value for ---- 313_1 
+## 202 getting value for ---- 288_1 
+## 203 getting value for ---- 398_1 
+## 204 getting value for ---- 301_1 
+## 205 getting value for ---- 335_2 
+## 206 getting value for ---- 326_2 
+## 207 getting value for ---- 324_2 
+## 208 getting value for ---- 313_2 
+## 209 getting value for ---- 317_2 
+## 210 getting value for ---- 278_2 
+## 211 getting value for ---- 374_2 
+## 212 getting value for ---- 265_2 
+## 213 getting value for ---- 261_2 
+## 214 getting value for ---- 267_2 
+## 215 getting value for ---- 367_2 
+## 216 getting value for ---- 354_2 
+## 217 getting value for ---- 296_2 
+## 218 getting value for ---- 259_2 
+## 219 getting value for ---- 286_2 
+## 220 getting value for ---- 256_2 
+## 221 getting value for ---- 268_2 
+## 222 getting value for ---- 349_2 
+## 223 getting value for ---- 405_2 
+## 224 getting value for ---- 404_2 
+## 225 getting value for ---- 282_2 
+## 226 getting value for ---- 348_2 
+## 227 getting value for ---- 387_2 
+## 228 getting value for ---- 402_2 
+## 229 getting value for ---- 408_2 
+## 230 getting value for ---- 260_2 
+## 231 getting value for ---- 305_2 
+## 232 getting value for ---- 382_2 
+## 233 getting value for ---- 390_2 
+## 234 getting value for ---- 388_2 
+## 235 getting value for ---- 295_2 
+## 236 getting value for ---- 369_2 
+## 237 getting value for ---- 253_2 
+## 238 getting value for ---- 250_2 
+## 239 getting value for ---- 406_2 
+## 240 getting value for ---- 271_2 
+## 241 getting value for ---- 392_2 
+## 242 getting value for ---- 399_2 
+## 243 getting value for ---- 393_2 
+## 244 getting value for ---- 391_2 
+## 245 getting value for ---- 230_2 
+## 246 getting value for ---- 226_2 
+## 247 getting value for ---- 232_2 
+## 248 getting value for ---- 207_2 
+## 249 getting value for ---- 236_2 
+## 250 getting value for ---- 212_2 
+## 251 getting value for ---- 225_2 
+## 252 getting value for ---- 255_2 
+## 253 getting value for ---- 328_2 
+## 254 getting value for ---- 330_2 
+## 255 getting value for ---- 340_2 
+## 256 getting value for ---- 234_2 
+## 257 getting value for ---- 339_2 
+## 258 getting value for ---- 316_2 
+## 259 getting value for ---- 319_2 
+## 260 getting value for ---- 279_2 
+## 261 getting value for ---- 018_2 
+## 262 getting value for ---- 312_2 
+## 263 getting value for ---- 359_2 
+## 264 getting value for ---- 370_2 
+## 265 getting value for ---- 251_2 
+## 266 getting value for ---- 372_2 
+## 267 getting value for ---- 276_2 
+## 268 getting value for ---- 358_2 
+## 269 getting value for ---- 266_2 
+## 270 getting value for ---- 373_2 
+## 271 getting value for ---- 394_2 
+## 272 getting value for ---- 378_2 
+## 273 getting value for ---- 407_2 
+## 274 getting value for ---- 262_2 
+## 275 getting value for ---- 257_2 
+## 276 getting value for ---- 341_2 
+## 277 getting value for ---- 280_2 
+## 278 getting value for ---- 384_2 
+## 279 getting value for ---- 245_2 
+## 280 getting value for ---- 356_2 
+## 281 getting value for ---- 397_2 
+## 282 getting value for ---- 396_2 
+## 283 getting value for ---- 249_2 
+## 284 getting value for ---- 302_2 
+## 285 getting value for ---- 395_2 
+## 286 getting value for ---- 244_2 
+## 287 getting value for ---- 344_2 
+## 288 getting value for ---- 300_2 
+## 289 getting value for ---- 364_2 
+## 290 getting value for ---- 381_2 
+## 291 getting value for ---- 258_2 
+## 292 getting value for ---- 246_2 
+## 293 getting value for ---- 400_2 
+## 294 getting value for ---- 389_2 
+## 295 getting value for ---- 375_2 
+## 296 getting value for ---- 401_2 
+## 297 getting value for ---- 206_2 
+## 298 getting value for ---- 205_2 
+## 299 getting value for ---- 220_2 
+## 300 getting value for ---- 210_2 
+## 301 getting value for ---- 228_2 
+## 302 getting value for ---- 219_2 
+## 303 getting value for ---- 332_2 
+## 304 getting value for ---- 338_2 
+## 305 getting value for ---- 327_2 
+## 306 getting value for ---- 237_2 
+## 307 getting value for ---- 329_2 
+## 308 getting value for ---- 305_1 
+## 309 getting value for ---- 283_1 
+## 310 getting value for ---- 273_1 
+## 311 getting value for ---- 299_1 
+## 312 getting value for ---- 304_1 
+## 313 getting value for ---- 292_1 
+## 314 getting value for ---- 263_1 
+## 315 getting value for ---- 269_1 
+## 316 getting value for ---- 215_1 
+## 317 getting value for ---- 267_1 
+## 318 getting value for ---- 236_1 
+## 319 getting value for ---- 272_1 
+## 320 getting value for ---- 341_1 
+## 321 getting value for ---- 212_1 
+## 322 getting value for ---- 209_1 
+## 323 getting value for ---- 237_1 
+## 324 getting value for ---- 211_1 
+## 325 getting value for ---- 229_1 
+## 326 getting value for ---- 238_1 
+## 327 getting value for ---- 235_1 
+## 328 getting value for ---- 226_1 
+## 329 getting value for ---- 265_1 
+## 330 getting value for ---- 392_1 
+## 331 getting value for ---- 257_1 
+## 332 getting value for ---- 378_1 
+## 333 getting value for ---- 242_1 
+## 334 getting value for ---- 348_1 
+## 335 getting value for ---- 324_1 
+## 336 getting value for ---- 256_1 
+## 337 getting value for ---- 330_1 
+## 338 getting value for ---- 317_1 
+## 339 getting value for ---- 320_1 
+## 340 getting value for ---- 309_1 
+## 341 getting value for ---- 318_1 
+## 342 getting value for ---- 239_1 
+## 343 getting value for ---- 390_1 
+## 344 getting value for ---- 335_1 
+## 345 getting value for ---- 386_1 
+## 346 getting value for ---- 391_1 
+## 347 getting value for ---- 384_1 
+## 348 getting value for ---- 356_1 
+## 349 getting value for ---- 018_1 
+## 350 getting value for ---- 347_1 
+## 351 getting value for ---- 366_1 
+## 352 getting value for ---- 365_1 
+## 353 getting value for ---- 406_1 
+## 354 getting value for ---- 333_1 
+## 355 getting value for ---- 328_1 
+## 356 getting value for ---- 310_1 
+## 357 getting value for ---- 311_1 
+## 358 getting value for ---- 337_2 
+## 359 getting value for ---- 347_2 
+## 360 getting value for ---- 311_2 
+## 361 getting value for ---- 325_2 
+## 362 getting value for ---- 320_2 
+## 363 getting value for ---- 314_2 
+## 364 getting value for ---- 355_2 
+## 365 getting value for ---- 351_2 
+## 366 getting value for ---- 371_2 
+## 367 getting value for ---- 362_2 
+## 368 getting value for ---- 345_2 
+## 369 getting value for ---- 360_2 
+## 370 getting value for ---- 264_2 
+## 371 getting value for ---- 361_2 
+## 372 getting value for ---- 368_2 
+## 373 getting value for ---- 283_2 
+## 374 getting value for ---- 281_2 
+## 375 getting value for ---- 398_2 
+## 376 getting value for ---- 287_2 
+## 377 getting value for ---- 306_2 
+## 378 getting value for ---- 243_2 
+## 379 getting value for ---- 239_2 
+## 380 getting value for ---- 269_2 
+## 381 getting value for ---- 377_2 
+## 382 getting value for ---- 383_2 
+## 383 getting value for ---- 241_2 
+## 384 getting value for ---- 294_2 
+## 385 getting value for ---- 263_2 
+## 386 getting value for ---- 289_2 
+## 387 getting value for ---- 297_2 
+## 388 getting value for ---- 299_2 
+## 389 getting value for ---- 284_2 
+## 390 getting value for ---- 342_2 
+## 391 getting value for ---- 379_2 
+## 392 getting value for ---- 242_2 
+## 393 getting value for ---- 290_2 
+## 394 getting value for ---- 227_2 
+## 395 getting value for ---- 214_2 
+## 396 getting value for ---- 229_2 
+## 397 getting value for ---- 211_2 
+## 398 getting value for ---- 218_2 
+## 399 getting value for ---- 208_2 
+## 400 getting value for ---- 235_2 
+## 401 getting value for ---- 331_2 
+## 402 getting value for ---- 336_2 
+## 403 getting value for ---- 309_2 
+## 404 getting value for ---- 233_2 
+## 405 getting value for ---- 238_2 
+## 406 getting value for ---- 086_1 
+## 407 getting value for ---- 046_1 
+## 408 getting value for ---- 060_1 
+## 409 getting value for ---- 059_1 
+## 410 getting value for ---- 171_1 
+## 411 getting value for ---- 172_1 
+## 412 getting value for ---- 136_1 
+## 413 getting value for ---- 128_1 
+## 414 getting value for ---- 126_1 
+## 415 getting value for ---- 001_1 
+## 416 getting value for ---- 032_1 
+## 417 getting value for ---- 116_1 
+## 418 getting value for ---- 134_1 
+## 419 getting value for ---- 123_1 
+## 420 getting value for ---- 043_1 
+## 421 getting value for ---- 146_1 
+## 422 getting value for ---- 087_1 
+## 423 getting value for ---- 137_1 
+## 424 getting value for ---- 156_1 
+## 425 getting value for ---- 152_1 
+## 426 getting value for ---- 140_1 
+## 427 getting value for ---- 148_1 
+## 428 getting value for ---- 160_1 
+## 429 getting value for ---- 158_1 
+## 430 getting value for ---- 189_1 
+## 431 getting value for ---- 223_1 
+## 432 getting value for ---- 178_1 
+## 433 getting value for ---- 180_1 
+## 434 getting value for ---- 122_1 
+## 435 getting value for ---- 003_1 
+## 436 getting value for ---- 179_1 
+## 437 getting value for ---- 021_1 
+## 438 getting value for ---- 114_1 
+## 439 getting value for ---- 050_1 
+## 440 getting value for ---- 098_1 
+## 441 getting value for ---- 100_1 
+## 442 getting value for ---- 089_1 
+## 443 getting value for ---- 090_1 
+## 444 getting value for ---- 198_1 
+## 445 getting value for ---- 202_1 
+## 446 getting value for ---- 201_1 
+## 447 getting value for ---- 076_1 
+## 448 getting value for ---- 095_1 
+## 449 getting value for ---- 102_1 
+## 450 getting value for ---- 008_1 
+## 451 getting value for ---- 009_1 
+## 452 getting value for ---- 024_1 
+## 453 getting value for ---- 014_1 
+## 454 getting value for ---- 004_1</code></pre>
+<pre class="r"><code>head(AllValue)</code></pre>
+<pre><code>##   plot_name leaf_name  name  genotype range row block Photo_first
+## 1       120         1 120_1 Z019E0032     4  17   1_3    29.84656
+## 2       132         1 132_1 Z019E0131     4   5   1_3    28.59743
+## 3       035         1 035_1 Z019E0142     2  34   1_2    33.87819
+## 4       111         1 111_1 Z019E0186     4  26   1_4    29.39469
+## 5       058         1 058_1 Z019E0012     2  11   1_1    26.88869
+## 6       174         1 174_1 Z019E0042     6  31   1_6    28.49013
+##   Cond_first Ci.Ca_first Photo_last Cond_last Ci.Ca_last
+## 1  0.3692671   0.6263136   29.86556 0.3431470  0.6013116
+## 2  0.2847332   0.5517610   24.87349 0.1758160  0.4011134
+## 3  0.4477515   0.6379621   33.92182 0.3656195  0.5682636
+## 4  0.3546408   0.6201537   28.11929 0.2398602  0.4873725
+## 5  0.2201143   0.4708115   28.34147 0.1639749  0.2680710
+## 6  0.2461219   0.4910930   17.43624 0.1179347  0.3999248</code></pre>
+<pre class="r"><code>str(AllValue)</code></pre>
+<pre><code>## Classes 'GXvalue' and 'data.frame':  454 obs. of  13 variables:
+##  $ plot_name  : chr  &quot;120&quot; &quot;132&quot; &quot;035&quot; &quot;111&quot; ...
+##  $ leaf_name  : num  1 1 1 1 1 1 1 1 1 1 ...
+##  $ name       : chr  &quot;120_1&quot; &quot;132_1&quot; &quot;035_1&quot; &quot;111_1&quot; ...
+##  $ genotype   : chr  &quot;Z019E0032&quot; &quot;Z019E0131&quot; &quot;Z019E0142&quot; &quot;Z019E0186&quot; ...
+##  $ range      : chr  &quot; 4&quot; &quot; 4&quot; &quot; 2&quot; &quot; 4&quot; ...
+##  $ row        : chr  &quot;17&quot; &quot;5&quot; &quot;34&quot; &quot;26&quot; ...
+##  $ block      : chr  &quot;1_3&quot; &quot;1_3&quot; &quot;1_2&quot; &quot;1_4&quot; ...
+##  $ Photo_first: num  29.8 28.6 33.9 29.4 26.9 ...
+##  $ Cond_first : num  0.369 0.285 0.448 0.355 0.22 ...
+##  $ Ci.Ca_first: num  0.626 0.552 0.638 0.62 0.471 ...
+##  $ Photo_last : num  29.9 24.9 33.9 28.1 28.3 ...
+##  $ Cond_last  : num  0.343 0.176 0.366 0.24 0.164 ...
+##  $ Ci.Ca_last : num  0.601 0.401 0.568 0.487 0.268 ...</code></pre>
+<p>Apply <code>summary</code> function on <code>GXvalue</code> object could give you a rough idea how our values look like, as well as how complete your dataset is(based on rep numbers).</p>
+<pre class="r"><code>summary(AllValue, &quot;Photo_first&quot;)</code></pre>
+<pre><code>## [1] &quot;454 entries&quot;
+## [1] &quot;leaf number: 1  counts: 252&quot; &quot;leaf number: 2  counts: 202&quot;
+## [1] &quot;Summary for Photo_first :&quot;
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##    7.27   28.54   30.71   30.59   33.28   40.04</code></pre>
+<p><img src="data:image/png;base64,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" width="672" /></p>
 </div>
 <div id="pgmean.gxvalue" class="section level2">
 <h2>PGMean.GXvalue</h2>
-</div>
-<div id="summary" class="section level2">
-<h2>summary</h2>
+<p>Once we got the values for each leaf sample, we can average the replicates in plots to get plot mean. Furthermore, since my experiment is RCBD with two blocks, I will need other softwares or packages to test for “block” effect and get BLUPs, but <code>PGMean</code> could still calculate genotype mean as a quick peak.</p>
+<p>It takes a <code>GXvalue</code> class table and you have to choose do you want “plot” mean or “genotype” mean. Standard errors are also calculated along with means. Due to the fact this example dataset is not complete, some plots only have 1 rep, so standard errors are left NA. In the end a <code>GXmean</code> class table is our output.</p>
+<pre class="r"><code>All_Plot_Mean = PGMean.GXvalue(table = AllValue, type = &quot;plot&quot;)
+head(All_Plot_Mean)</code></pre>
+<pre><code>##   Photo_first       se1 Cond_first       se2 Ci.Ca_first        se3
+## 1    30.09407        NA  0.3071404        NA   0.5588554         NA
+## 2    33.04417 0.4157424  0.4702737 0.1106128   0.6501093 0.06214361
+## 3    30.13402        NA  0.4132270        NA   0.6567781         NA
+## 4    31.95850        NA  0.4088973        NA   0.6315635         NA
+## 5    28.85415        NA  0.2486149        NA   0.4889900         NA
+## 6    29.51801        NA  0.4816661        NA   0.7049554         NA
+##   Photo_last     se4 Cond_last       se5 Ci.Ca_last        se6 name
+## 1   28.34812      NA 0.2225388        NA  0.4475159         NA  001
+## 2   33.14915 1.33529 0.4248318 0.1080004  0.6159457 0.06487419  003
+## 3   17.14521      NA 0.1079239        NA  0.3590968         NA  004
+## 4   32.79355      NA 0.3319258        NA  0.5459090         NA  005
+## 5   29.33462      NA 0.2160449        NA  0.4101836         NA  007
+## 6   29.93719      NA 0.2746289        NA  0.5125430         NA  008
+##   rep_number
+## 1          1
+## 2          2
+## 3          1
+## 4          1
+## 5          1
+## 6          1</code></pre>
+<pre class="r"><code>All_Geno_Mean = PGMean.GXvalue(table = AllValue, type = &quot;genotype&quot;)
+head(All_Geno_Mean)</code></pre>
+<pre><code>##   Photo_first       se1 Cond_first        se2 Ci.Ca_first         se3
+## 1    32.63358 2.4583080  0.4987503 0.06435379   0.6196301 0.048244139
+## 2    29.66128 0.6510794  0.3202267 0.02122131   0.5663033 0.021493022
+## 3    31.08139 0.6463155  0.3920433 0.01968533   0.6304771 0.006002226
+## 4    29.47614 0.9086876  0.2467605 0.03130501   0.4600490 0.070707464
+## 5    28.68134        NA  0.2316911         NA   0.4642242          NA
+## 6    31.51549 2.9804679  0.3378364 0.09984724   0.5511694 0.072441474
+##   Photo_last       se4 Cond_last        se5 Ci.Ca_last        se6
+## 1   31.55617 2.7368705 0.4311308 0.06284513  0.5910306 0.04444923
+## 2   25.09349 0.9985512 0.1902928 0.01231965  0.4276194 0.02065462
+## 3   28.31636 3.6997958 0.2133319 0.03199015  0.4242808 0.00313067
+## 4   24.22070 1.5096174 0.1565178 0.02174358  0.3448998 0.03522764
+## 5   20.05882        NA 0.1263675         NA  0.3561975         NA
+## 6   27.09388 6.1217865 0.2038045 0.06939495  0.4079320 0.04557627
+##        name rep_number
+## 1       B73         11
+## 2      MS71         13
+## 3 Z019E0002          2
+## 4 Z019E0003          3
+## 5 Z019E0004          1
+## 6 Z019E0005          2</code></pre>
+<p>Apply <code>summary</code> function on <code>GXmean</code> object could give you a rough idea how our values look like, as well as how complete your dataset is(based on rep numbers).</p>
+<pre class="r"><code>summary(All_Geno_Mean, &quot;Photo_first&quot;)</code></pre>
+<pre><code>## There are 39 genotype(s) with 1 replicate(s)
+## There are 70 genotype(s) with 2 replicate(s)
+## There are 65 genotype(s) with 3 replicate(s)
+## There are 14 genotype(s) with 4 replicate(s)
+## There are 1 genotype(s) with 11 replicate(s)
+## There are 1 genotype(s) with 13 replicate(s)
+## [1] &quot;Summary for Photo_first :&quot;
+##    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
+##   16.95   28.83   30.53   30.56   32.49   40.04</code></pre>
+<p><img src="data:image/png;base64,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" width="672" /> You probably noticed there are two genotypes that have way more reps than others, that’s my parents as checks in the field.</p>
 </div>
 <div id="example" class="section level2">
 <h2>example</h2>

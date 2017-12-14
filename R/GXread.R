@@ -84,6 +84,7 @@ read.GX <- function(filename,leaf_rep,genolist,condition = FALSE){
   col.numeric = c(1,2,3,4)
   table[,col.numeric] = apply(table[,col.numeric],2,function(x) as.numeric(x))
   table = table[c(6,7,5,1,2,3,4)]
+  names(table) = c(names(table)[1:6],"Ci.Ca")
   table$tag = filename
   #input genotype table and format it
   geno = read.csv(genolist,stringsAsFactors = FALSE)

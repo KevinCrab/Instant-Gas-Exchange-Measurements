@@ -1,4 +1,5 @@
 \name{summary.GXcurve}
+\alias{summary}
 \alias{summary.GXcurve}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
@@ -10,7 +11,8 @@ Summarize the original dataset included, total measurement counts and counts for
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-summary.GXcurve(table, value_summary = FALSE, check_condition = FALSE)
+summary(table,...)
+\method{summary}{summary.GXcurve}(table, value_summary = FALSE, check_condition = TRUE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -37,7 +39,7 @@ Jiayang Xie <kevinxie@illinois.edu>
 \examples{
 # Assume AllCurve has class GXcurve
 data(AllCurve)
-summary.GXcurve(AllCurve, value_summary = TRUE, check_condition = TRUE)
+summary.GXcurve(AllCurve, value_summary = TRUE, check_condition = "flow")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

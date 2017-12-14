@@ -1,7 +1,7 @@
 ### Summary for GXmean class
 summary.GXmean = function(table, trait){
   type = attr(table,"type")
-  rep = table(table$leaf_replicate_number)
+  rep = table(table$rep_number)
   for ( i in 1:length(rep)){
     cat("There are ",rep[i]," ",type,"(s) with ", names(rep[i])," replicate(s)\n",sep = "")
   }

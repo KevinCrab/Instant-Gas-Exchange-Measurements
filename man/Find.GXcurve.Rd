@@ -1,4 +1,5 @@
 \name{Find.GXcurve}
+\alias{Find}
 \alias{Find.GXcurve}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
@@ -10,7 +11,8 @@ Find.GXcurve finds the targeting measurement id in the table provided. If this t
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-Find.GXcurve(table, id = NULL, DuplicateName = FALSE, TooSmall = FALSE, MissRecording = FALSE)
+Find(table, ...)
+\method{Find}{GXcurve}(table, id = NULL, DuplicateName = FALSE, MissRecording = FALSE, TooSmall = FALSE)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -56,6 +58,7 @@ Jiayang Xie <kevinxie@illinois.edu>
 
 \examples{
 # Assume "AllCurve" is a GXcurve dataset
+data(AllCurve)
 Find.GXcurve(AllCurve, id = "120_1")
 Find.GXcurve(AllCurve, id = "111_1", DuplicateName = TRUE, TooSmall = TRUE, MissRecording = TRUE)
 }

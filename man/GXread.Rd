@@ -32,7 +32,7 @@ read.GX(filename, leaf_rep, genolist, condition = FALSE)
 }
 }
 \value{
-Returns a table that includes all observations in the raw dataset with measurements (Photo; Cond; Ci/Ca) and properties (plot name; leaf replicate number; genotype name; original dataset; range; row; block; time)
+Returns a class GXcurve table that includes all observations in the raw dataset with measurements (Photo; Cond; Ci/Ca) and properties (plot name; leaf replicate number; genotype name; original dataset; range; row; block; time)
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}
@@ -50,9 +50,12 @@ Jiayang Xie <kevinxie@illinois.edu>
 
 
 \examples{
-# Assume "GX_output.csv"" file is exported from Licor-6400 machine
+# Assume "cm 07-21-2017 ril leak1_.csv" is exported from Licor-6400 machine
 # "genotypic imformation.csv" has matching of plot names with genotype names.
-read.GX(filename = "GX_output.csv",leaf_rep = 1, genolist = "genotypic imformation.csv",condition = TRUE)
+
+input <- system.file("extdata", "cm_07-21-2017_ril_leak1_.csv", package = "IGEA")
+genolist <- system.file("extdata", "genotypic_imformation.csv", package = "IGEA")
+read.GX(filename = input ,leaf_rep = 1, genolist = genolist,condition = TRUE)
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

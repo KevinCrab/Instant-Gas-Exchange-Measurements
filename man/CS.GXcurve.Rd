@@ -1,4 +1,5 @@
 \name{CS.GXcurve}
+\alias{CS}
 \alias{CS.GXcurve}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
@@ -11,7 +12,8 @@ This function merges GXcurve class data from seperate machines into one file. It
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-CS.GXcurve(table, ...)
+CS(table,...)
+\method{CS}{GXcurve}(table, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -24,7 +26,11 @@ CS.GXcurve(table, ...)
 %%     ~~Describe \code{\dots} here~~
 }
 }
+\details{
+57 or 58 records for each individual measurement is normal.
+The screening process finds the consecutive recording that exceed 58, caused by missing name remarks in between measurements. Then it finds the discontinuous observations that exceeds 58 under the same name across the dataset, which is caused by duplicate names (human typo). Interuptions in the measurement is found by screening observation records smaller than 57.
 
+}
 \value{
 Returns a GXcurve class table. Three types of human errors are summarized and saved in table attributes. 
 %%  ~Describe the value returned
@@ -33,6 +39,7 @@ Returns a GXcurve class table. Three types of human errors are summarized and sa
 %%  \item{comp2 }{Description of 'comp2'}
 %% ...
 }
+
 
 \author{
 Jiayang Xie <kevinxie@illinois.edu>
@@ -44,6 +51,10 @@ Jiayang Xie <kevinxie@illinois.edu>
 
 
 \examples{
-Allcurve = CS.GXcurve(GXcurve_table1, GXcurve_table2, GXcurve_table3, GXcurve_table4)
+# Assume leak1_718, leak1_719, leak1_720 are names of GXcurve class tables
+data(leak1_718)
+data(leak1_719)
+data(leak1_720)
+Allcurve = CS.GXcurve(leak1_718, leak1_719, leak1_720)
 }
 
