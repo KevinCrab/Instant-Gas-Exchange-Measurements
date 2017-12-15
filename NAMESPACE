@@ -1,4 +1,5 @@
 export(read.GX, plotGX, CS.GXcurve,summary.GXcurve,summary.GXmean,summary.GXvalue, PGMean.GXvalue, Find.GXcurve, GetValue.GXcurve)
 importFrom("utils", "read.csv")
+importFrom("stats", "sd")
 importFrom("graphics", "hist")
 importFrom("ggplot2", "ggplot", "ggsave", "element_text", "element_blank", "unit", "aes_string", "aes", "geom_point", "labs","theme_bw","theme")
