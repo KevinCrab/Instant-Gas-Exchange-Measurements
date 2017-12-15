@@ -8,3 +8,5 @@ summary(aa,"Photo_first")
 
 bb = PGMean.GXvalue(aa,"plot")
 ?PGMean
+
+

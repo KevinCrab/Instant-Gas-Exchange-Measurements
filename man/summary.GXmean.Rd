@@ -1,5 +1,4 @@
 \name{summary.GXmean}
-\alias{summary}
 \alias{summary.GXmean}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
@@ -11,8 +10,7 @@ Summarize the replicate number for each plot or genotype. A brief summary and hi
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-summary(table,...)
-\method{summary}{summary.GXmean}(table, trait)
+\method{summary}{GXmean}(table, trait,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -23,6 +21,10 @@ summary(table,...)
   \item{trait}{
   the trait you want to summarize. Photo_first/Cond_first/Ci.Ca_first/Photo_last/Cond_last/Ci.Ca_last
 %%     ~~Describe \code{trait} here~~
+}
+  \item{\dots}{
+  other inputs
+%%     ~~Describe \code{\dots} here~~
 }
 }
 

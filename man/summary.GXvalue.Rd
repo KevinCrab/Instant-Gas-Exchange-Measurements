@@ -1,5 +1,4 @@
 \name{summary.GX}
-\alias{summary}
 \alias{summary.GXvalue}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
@@ -11,8 +10,7 @@ Summarize total measurement counts and counts for each replicates. A brief summa
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-summary(table,...)
-\method{summary}{summary.GXvalue}(table, trait)
+\method{summary}{GXvalue}(table, trait,...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -23,6 +21,10 @@ summary(table,...)
   \item{trait}{
   the trait you want to summarize. Photo_first/Cond_first/Ci.Ca_first/Photo_last/Cond_last/Ci.Ca_last
 %%     ~~Describe \code{trait} here~~
+}
+  \item{\dots}{
+  other inputs
+%%     ~~Describe \code{\dots} here~~
 }
 }
 
