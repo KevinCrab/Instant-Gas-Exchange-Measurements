@@ -12,7 +12,7 @@ This function merges GXcurve class data from seperate machines into one file. It
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-CS(table, ...)
+CS(table,...)
 \method{CS}{GXcurve}(table, ...)
 }
 %- maybe also 'usage' for other objects documented here.
@@ -55,6 +55,6 @@ Jiayang Xie <kevinxie@illinois.edu>
 data(leak1_718)
 data(leak1_719)
 data(leak1_720)
-#Allcurve = CS(leak1_718, leak1_719, leak1_720)
+Allcurve = CS.GXcurve(leak1_718, leak1_719, leak1_720)
 }
 

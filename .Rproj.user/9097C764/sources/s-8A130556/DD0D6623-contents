@@ -51,7 +51,7 @@ Jiayang Xie <kevinxie@illinois.edu>
 \examples{
 # Assume "AllCurve" is a GXcurve dataset
 data(AllCurve)
-#AllValue = GetValue(AllCurve, first.minute = TRUE, last.minute = TRUE)
+AllValue = GetValue(AllCurve, first.minute = TRUE, last.minute = TRUE)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

@@ -51,8 +51,8 @@ Jiayang Xie <kevinxie@illinois.edu>
 \examples{
 # Assume AllValue is a GXvalue class table
 data(AllValue)
-#All_plot_Mean = PGMean(table = AllValue, type = "plot")
-#All_geno_Mean = PGMean(table = AllValue, type = "genotype")
+All_plot_Mean = PGMean(table = AllValue, type = "plot")
+All_geno_Mean = PGMean(table = AllValue, type = "genotype")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

@@ -63,8 +63,8 @@ Jiayang Xie <kevinxie@illinois.edu>
 \examples{
 # Assume "AllCurve" is a GXcurve dataset
 data(AllCurve)
-#Find.GXcurve(AllCurve, id = "120_1")
-#Find.GXcurve(AllCurve, id = "111_1", DuplicateName = TRUE, TooSmall = TRUE, MissRecording = TRUE)
+Find(AllCurve, id = "120_1")
+Find(AllCurve, id = "111_1", DuplicateName = TRUE, TooSmall = TRUE, MissRecording = TRUE)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

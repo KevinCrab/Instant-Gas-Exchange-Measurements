@@ -1,0 +1,22 @@
+{
+    "collab_server" : "",
+    "contents" : "",
+    "created" : 1513386527076.000,
+    "dirty" : false,
+    "encoding" : "UTF-8",
+    "folds" : "",
+    "hash" : "5531693",
+    "id" : "A50515EE",
+    "lastKnownWriteTime" : 1513388068,
+    "last_content_update" : 1513388068186,
+    "path" : "~/GitHub/Instant-Gas-Exchange-Measurements/man/Find.GXcurve.Rd",
+    "project_path" : "man/Find.GXcurve.Rd",
+    "properties" : {
+        "cursorPosition" : "66,1",
+        "scrollLine" : "41"
+    },
+    "relative_order" : 4,
+    "source_on_save" : false,
+    "source_window" : "",
+    "type" : "r_doc"
+}

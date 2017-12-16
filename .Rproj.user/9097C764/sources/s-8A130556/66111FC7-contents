@@ -54,8 +54,8 @@ Jiayang Xie <kevinxie@illinois.edu>
 # "genotypic imformation.csv" has matching of plot names with genotype names.
 
 input <- system.file("extdata", "cm_07-21-2017_ril_leak1_.csv", package = "IGEA")
-genolist <- system.file("extdata", "genotypic_information.csv", package = "IGEA")
-leak1_721 = read.GX(filename = input ,leaf_rep = 1, genolist = genolist,condition = TRUE)
+genolist <- system.file("extdata", "genotypic_imformation.csv", package = "IGEA")
+read.GX(filename = input ,leaf_rep = 1, genolist = genolist,condition = TRUE)
 
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the

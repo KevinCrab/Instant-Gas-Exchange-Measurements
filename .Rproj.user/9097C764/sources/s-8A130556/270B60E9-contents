@@ -1,5 +1,5 @@
 # Calculate mean values for each parameter
-GetValue = function(table, ...){
+GetValue = function(table,...){
   UseMethod("GetValue",table)
 }
 
