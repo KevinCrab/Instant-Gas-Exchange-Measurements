@@ -23,11 +23,11 @@ steward_721 = read.GX(filename = "KX_07-21-2017_RIL_STEWARD_.csv",leaf_rep = 2,g
 
 AllCurve = CS(leak1_718,leak2_718,leak1_719,leak1_720,leak1_721,leak2_721,steward_720,steward_721,steward_718)
 AllValue = GetValue(AllCurve)
-AllMean = PGMean.GXvalue(AllValue, "genotype")
+AllMean = PGMean(AllValue, "genotype")
 
 
 
-plot.GXcurve("Cond",genotype = c("Z019E0142"),dataset=all)
+plotGX("Cond",genotype = c("Z019E0142"),dataset=AllCurve)
 
 
 

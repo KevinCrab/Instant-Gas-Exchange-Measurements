@@ -55,6 +55,6 @@ Jiayang Xie <kevinxie@illinois.edu>
 data(leak1_718)
 data(leak1_719)
 data(leak1_720)
-#Allcurve = CS(leak1_718, leak1_719, leak1_720)
+Allcurve = CS(leak1_718, leak1_719, leak1_720)
 }
 

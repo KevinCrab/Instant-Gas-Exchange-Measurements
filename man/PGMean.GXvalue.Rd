@@ -11,8 +11,8 @@ This function averages the replicates within plots or genotypes to get plot mean
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-PGMean(table,...)
-\method{PGMean}{GXvalue}(table, type)
+PGMean(table, ...)
+\method{PGMean}{GXvalue}(table, type, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -51,8 +51,8 @@ Jiayang Xie <kevinxie@illinois.edu>
 \examples{
 # Assume AllValue is a GXvalue class table
 data(AllValue)
-#All_plot_Mean = PGMean(table = AllValue, type = "plot")
-#All_geno_Mean = PGMean(table = AllValue, type = "genotype")
+All_plot_Mean = PGMean(table = AllValue, type = "plot")
+All_geno_Mean = PGMean(table = AllValue, type = "genotype")
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

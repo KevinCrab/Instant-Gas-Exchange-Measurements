@@ -12,7 +12,7 @@ Find.GXcurve finds the targeting measurement id in the table provided. If this t
 }
 \usage{
 Find(table, ...)
-\method{Find}{GXcurve}(table, id = NULL, DuplicateName = FALSE, MissRecording = FALSE, TooSmall = FALSE)
+\method{Find}{GXcurve}(table, id = NULL, DuplicateName = FALSE, MissRecording = FALSE, TooSmall = FALSE, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
@@ -63,8 +63,8 @@ Jiayang Xie <kevinxie@illinois.edu>
 \examples{
 # Assume "AllCurve" is a GXcurve dataset
 data(AllCurve)
-#Find.GXcurve(AllCurve, id = "120_1")
-#Find.GXcurve(AllCurve, id = "111_1", DuplicateName = TRUE, TooSmall = TRUE, MissRecording = TRUE)
+Find.GXcurve(AllCurve, id = "120_1")
+Find.GXcurve(AllCurve, id = "111_1", DuplicateName = TRUE, TooSmall = TRUE, MissRecording = TRUE)
 }
 % Add one or more standard keywords, see file 'KEYWORDS' in the
 % R documentation directory.

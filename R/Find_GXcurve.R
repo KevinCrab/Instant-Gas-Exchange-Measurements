@@ -3,7 +3,7 @@ Find <- function(table, ...){
   UseMethod("Find", table)
 } 
 
-Find.GXcurve = function(table, id = NULL,DuplicateName = FALSE, MissRecording = FALSE, TooSmall = FALSE){
+Find.GXcurve = function(table, id = NULL,DuplicateName = FALSE, MissRecording = FALSE, TooSmall = FALSE, ...){
   id_all = vector()
   duplicatelist = vector()
   toosmall_names = vector()

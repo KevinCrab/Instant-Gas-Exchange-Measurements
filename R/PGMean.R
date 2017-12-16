@@ -2,7 +2,7 @@ PGMean = function(table, ...){
   UseMethod("PGMean",table)
 }
 
-PGMean.GXvalue = function(table, type){
+PGMean.GXvalue = function(table, type, ...){
   # find corresponding column 
   if(type == "plot"){
     col = "plot_name"
