@@ -19,7 +19,7 @@ plotGX(trait, table = NULL, genotype = NULL, id = NULL, dataset = NULL)
 %%     ~~Describe \code{trait} here~~
 }
   \item{table}{
-  Plot out all the individual entries in this table. pass in GXcurve class object.
+  Plot out all the individual entries in this table. pass in \code{GXcurve} class object.
 %%     ~~Describe \code{table} here~~
 }
   \item{genotype}{
@@ -33,7 +33,7 @@ plotGX(trait, table = NULL, genotype = NULL, id = NULL, dataset = NULL)
   \item{dataset}{
   different from \code{table}, this function doesn't plot out all the individuals in \code{dataset}, but only the chosen \code{genotype} or \code{id} included in it. 
   argument \code{dataset} has to pair with \code{genotype} or \code{id}. 
-  pass in GXcurve class object.
+  pass in \code{GXcurve} class object.
 
 %%     ~~Describe \code{dataset} here~~
 }

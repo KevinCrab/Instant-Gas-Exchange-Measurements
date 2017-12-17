@@ -1,4 +1,4 @@
-export(read.GX, plotGX, CS, CS.GXcurve, PGMean, PGMean.GXvalue, Find, Find.GXcurve, GetValue, GetValue.GXcurve)
+export(read.GX, plotGX, CS, CS.GXcurve, PGMean, PGMean.GXvalue, GetValue, GetValue.GXcurve, FindGX, summary.GXcurve, summary.GXvalue, summary.GXmean)
 importFrom("utils", "read.csv")
 importFrom("stats", "sd")
 importFrom("graphics", "hist")

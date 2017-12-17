@@ -15,7 +15,7 @@ Summarize the replicate number for each plot or genotype. A brief summary and hi
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{
-  a GXmean class object
+  a \code{GXmean} class object
 %%     ~~Describe \code{object} here~~
 }
   \item{trait}{
@@ -23,7 +23,6 @@ Summarize the replicate number for each plot or genotype. A brief summary and hi
 %%     ~~Describe \code{trait} here~~
 }
   \item{\dots}{
-  other inputs
 %%     ~~Describe \code{\dots} here~~
 }
 }

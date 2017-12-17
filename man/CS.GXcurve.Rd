@@ -18,7 +18,7 @@ CS(table, ...)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{table}{
-  GXcurve class table. If inputting single file, then this function does only screening.
+  \code{GXcurve} class table. If inputting single file, then this function does only screening.
 %%     ~~Describe \code{table} here~~
 }
   \item{\dots}{
@@ -32,7 +32,7 @@ The screening process finds the consecutive recording that exceed 58, caused by 
 
 }
 \value{
-Returns a GXcurve class table. Three types of human errors are summarized and saved in table attributes. 
+Returns a \code{GXcurve} class table. Three types of human errors are summarized and saved in table attributes. 
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}

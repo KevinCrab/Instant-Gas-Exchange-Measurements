@@ -8,6 +8,6 @@ summary.GXvalue = function(object,trait, ...){
     print(summary(object[,trait]))
     hist(object[,trait], breaks=20,main=paste("Histogram for",trait),xlab = trait)
   }else{
-    warnings("Please have single input: Photo_first/Cond_first/Ci.Ca_first/Photo_last/Cond_last/Ci.Ca_last")
+    stop("Please have single input: Photo_first/Cond_first/Ci.Ca_first/Photo_last/Cond_last/Ci.Ca_last")
   }
 }

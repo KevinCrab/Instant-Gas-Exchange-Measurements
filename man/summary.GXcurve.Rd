@@ -15,7 +15,7 @@ Summarize the original dataset included, total measurement counts and counts for
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{
-  a class GXcurve object
+  a class \code{GXcurve} object
 %%     ~~Describe \code{object} here~~
 }
   \item{value_summary}{
@@ -27,7 +27,7 @@ Summarize the original dataset included, total measurement counts and counts for
 %%     ~~Describe \code{check_condition} here~~
 }
   \item{\dots}{
-  other inputs
+
 }
 %%     ~~Describe \code{\dots} here~~
 }

@@ -17,7 +17,7 @@ GetValue(table, ...)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{table}{
-  The table consists all the observations for measurements.
+  A \code{GXcurve} class table
 %%     ~~Describe \code{table} here~~
 }
   \item{first.minute}{
@@ -29,13 +29,12 @@ GetValue(table, ...)
 %%     ~~Describe \code{last.minute} here~~
 }
   \item{\dots}{
-  other inputs
 %%     ~~Describe \code{\dots} here~~
 }
 }
 
 \value{
-Returns a data frame of GXvalue class. Each row are the values for desired parameters and leaf identity.
+Returns a data frame of \code{GXvalue} class. Each row are the values for desired parameters and leaf identity.
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}

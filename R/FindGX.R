@@ -1,9 +1,5 @@
-# Find ID
-Find <- function(table, ...){
-  UseMethod("Find", table)
-} 
-
-Find.GXcurve = function(table, id = NULL,DuplicateName = FALSE, MissRecording = FALSE, TooSmall = FALSE, ...){
+#FindGX
+FindGX = function(table, id = NULL, DuplicateName = FALSE, MissRecording = FALSE, TooSmall = FALSE){
   id_all = vector()
   duplicatelist = vector()
   toosmall_names = vector()
@@ -23,9 +19,14 @@ Find.GXcurve = function(table, id = NULL,DuplicateName = FALSE, MissRecording = 
                       rep("Duplicate name",length(duplicatelist)),
                       rep("Missrecording",length( missrecording)), 
                       rep("too few observations",length(toosmall_names)))
-  #check id length
+  #check valid id 
   if(length(id_all)==0){
     stop("Please put in an ID.")
+  }
+  for(i in 1:length(id_all)){
+    if(!id_all[i] %in% unique(table$name)){
+      stop("id not in dataset")
+    }
   }
   #find start line, end line for each id in the list
   for (j in 1:length(id_all)){

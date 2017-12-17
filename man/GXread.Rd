@@ -32,7 +32,7 @@ read.GX(filename, leaf_rep, genolist, condition = FALSE)
 }
 }
 \value{
-Returns a class GXcurve table that includes all observations in the raw dataset with measurements (Photo; Cond; Ci/Ca) and properties (plot name; leaf replicate number; genotype name; original dataset; range; row; block; time)
+Returns a class \code{GXcurve} table that includes all observations in the raw dataset with measurements (Photo; Cond; Ci/Ca) and properties (plot name; leaf replicate number; genotype name; original dataset; range; row; block; time)
 %%  ~Describe the value returned
 %%  If it is a LIST, use
 %%  \item{comp1 }{Description of 'comp1'}

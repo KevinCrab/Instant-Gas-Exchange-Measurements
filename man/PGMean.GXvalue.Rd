@@ -17,7 +17,7 @@ PGMean(table, ...)
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{table}{
-  a class GXvalue table with first-minute-value or second-minute-value, or both.
+  a class \code{GXvalue} table with first-minute-value or second-minute-value, or both.
 %%     ~~Describe \code{table} here~~
 }
   \item{type}{
@@ -25,7 +25,6 @@ PGMean(table, ...)
 %%     ~~Describe \code{type} here~~
 }
   \item{\dots}{
-  other inputs
 %%     ~~Describe \code{\dots} here~~
 }
 }

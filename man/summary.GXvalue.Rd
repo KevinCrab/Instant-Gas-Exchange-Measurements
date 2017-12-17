@@ -1,4 +1,4 @@
-\name{summary.GX}
+\name{summary.GXvalue}
 \alias{summary.GXvalue}
 %- Also NEED an '\alias' for EACH other topic documented here.
 \title{
@@ -10,12 +10,12 @@ Summarize total measurement counts and counts for each replicates. A brief summa
 %%  ~~ A concise (1-5 lines) description of what the function does. ~~
 }
 \usage{
-\method{summary}{GXvalue}(object, trait,...)
+\method{summary}{GXvalue}(object, trait, ...)
 }
 %- maybe also 'usage' for other objects documented here.
 \arguments{
   \item{object}{
-  a GXvalue class object
+  a \code{GXvalue} class object
 %%     ~~Describe \code{object} here~~
 }
   \item{trait}{
@@ -23,7 +23,6 @@ Summarize total measurement counts and counts for each replicates. A brief summa
 %%     ~~Describe \code{trait} here~~
 }
   \item{\dots}{
-  other inputs
 %%     ~~Describe \code{\dots} here~~
 }
 }
